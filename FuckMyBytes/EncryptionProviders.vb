@@ -15,6 +15,7 @@
             encrypted = Convert.ToBase64String(DESEncrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
             Return encrypted
         Catch ex As Exception
+            Return ex.Message
         End Try
     End Function
 
@@ -34,6 +35,11 @@
             decrypted = System.Text.ASCIIEncoding.ASCII.GetString(DESDecrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
             Return decrypted
         Catch ex As Exception
+            If ex.Message = "Padding is invalid and cannot be removed." Then
+                Return "String decryption failed. Password not correct?"
+            Else
+                Return ex.Message
+            End If
         End Try
     End Function
 End Module
