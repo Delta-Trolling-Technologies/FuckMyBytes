@@ -205,8 +205,8 @@ Partial Class Form1
         ' 
         Statistic.ForeColor = Color.Black
         Statistic.Name = "Statistic"
-        Statistic.Size = New Size(124, 17)
-        Statistic.Text = "Loaded: 0KiB/e 0KiB/p"
+        Statistic.Size = New Size(137, 17)
+        Statistic.Text = "Processed: 0KiB/s 0KiB/p"
         ' 
         ' Form1
         ' 
