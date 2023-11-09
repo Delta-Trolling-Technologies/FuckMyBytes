@@ -1,6 +1,13 @@
 ﻿Imports System.IO
 Imports System.Security.Cryptography
 Imports System.Text
+Imports Org.BouncyCastle.Crypto
+Imports Org.BouncyCastle.Crypto.Engines
+Imports Org.BouncyCastle.Crypto.Generators
+Imports Org.BouncyCastle.Crypto.Modes
+Imports Org.BouncyCastle.Crypto.Paddings
+Imports Org.BouncyCastle.Crypto.Parameters
+Imports Org.BouncyCastle.Security
 
 Module EncryptionProviders
     Public Function AES_Encrypt(ByVal input As String, ByVal pass As String) As String
@@ -57,17 +64,10 @@ Module EncryptionProviders
         End Using
     End Function
     Public Function SHAPassgen(ByVal input As String) As String
-        Dim in1 As String = SHA512(input)
-        Dim in2 As String = SHA512(in1)
-        Dim in3 As String = SHA512(in2)
-        Dim in4 As String = SHA512(in3)
-        Dim in5 As String = SHA512(in4)
-        Dim in6 As String = SHA512(in5)
-        Dim in7 As String = SHA512(in6)
-        Dim in8 As String = SHA512(in7)
-        Dim in9 As String = SHA512(in8)
-        Dim in10 As String = SHA512(in9)
-        Return in10
+        For i As Int32 = 1 To 100
+            input = SHA512(input)
+        Next i
+        Return input
     End Function
     Public Function DESEncrypt(plainText As String, password As String) As String
         Dim keyBytes As Byte() = Encoding.UTF8.GetBytes(password)
@@ -103,7 +103,7 @@ Module EncryptionProviders
             errors = True
         End Try
         Dim output As String
-        If Errors = False Then
+        If errors = False Then
             Using desAlg As DESCryptoServiceProvider = New DESCryptoServiceProvider()
                 desAlg.Key = keyBytes
                 desAlg.IV = ivBytes
@@ -127,5 +127,31 @@ Module EncryptionProviders
         End If
         ConvertToKiB(output, 1)
         Return output
+    End Function
+    Public Function IDEAEncrypt(data As String, password As String)
+        Dim key As Byte() = Encoding.UTF8.GetBytes(password)
+        If key.Length < 16 Then
+            Throw New ArgumentException("Uh oh. The length was fucked.")
+        End If
+        Dim cipher As IBufferedCipher = CipherUtilities.GetCipher("IDEA/ECB/PKCS7Padding")
+        Dim parameters As KeyParameter = New KeyParameter(key)
+        cipher.Init(True, parameters)
+        Dim dataToEncrypt As Byte() = Encoding.UTF8.GetBytes(data)
+        Dim encryptedData As Byte() = cipher.DoFinal(dataToEncrypt)
+        Dim encryptedText As String = Convert.ToBase64String(encryptedData)
+        Return encryptedText
+    End Function
+    Public Function IDEADecrypt(encryptedText As String, password As String)
+        Dim key As Byte() = Encoding.UTF8.GetBytes(password)
+        If key.Length < 16 Then
+            Throw New ArgumentException("Uh oh. The length was fucked.")
+        End If
+        Dim cipher As IBufferedCipher = CipherUtilities.GetCipher("IDEA/ECB/PKCS7Padding")
+        Dim parameters As KeyParameter = New KeyParameter(key)
+        cipher.Init(False, parameters)
+        Dim encryptedData As Byte() = Convert.FromBase64String(encryptedText)
+        Dim decryptedData As Byte() = cipher.DoFinal(encryptedData)
+        Dim decryptedText As String = Encoding.UTF8.GetString(decryptedData)
+        Return decryptedText
     End Function
 End Module

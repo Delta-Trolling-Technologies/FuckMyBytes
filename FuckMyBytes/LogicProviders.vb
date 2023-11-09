@@ -1,8 +1,10 @@
 ﻿Module LogicProviders
-    Public Function ShortenHashValue(hashValue As String, length As Integer) As String
+    Public Function LengthController(hashValue As String, length As Integer) As String
         Dim shortenedHash As String
         If hashValue.Length < length Then
-            shortenedHash = "F@ck1234"
+            Dim charactersToAdd As Integer = length - hashValue.Length
+            Dim additionalChars As String = New String("X"c, charactersToAdd)
+            shortenedHash = hashValue & additionalChars
         Else
             shortenedHash = hashValue.Substring(0, length)
         End If
