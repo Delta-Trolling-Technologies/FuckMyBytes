@@ -25,8 +25,10 @@ Module EncryptionProviders
             Dim Buffer As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(input)
             encrypted = Convert.ToBase64String(DESEncrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
             ConvertToKiB(encrypted, 1)
+            Logger_log("AES encrypted: " + encrypted)
             Return encrypted
         Catch ex As Exception
+            Logger_log("AES thrown an error: " + ex.Message)
             Return ex.Message
         End Try
     End Function
@@ -45,8 +47,10 @@ Module EncryptionProviders
             Dim Buffer As Byte() = Convert.FromBase64String(input)
             decrypted = System.Text.ASCIIEncoding.ASCII.GetString(DESDecrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
             ConvertToKiB(decrypted, 1)
+            Logger_log("AES decrypted: " + decrypted)
             Return decrypted
         Catch ex As Exception
+            Logger_log("AES thrown an error: " + ex.Message)
             If ex.Message = "Padding is invalid and cannot be removed." Then
                 Return "String decryption failed. Password not correct?"
             Else
@@ -67,29 +71,35 @@ Module EncryptionProviders
         For i As Int32 = 1 To 100
             input = SHA512(input)
         Next i
+        Logger_log("Final password hash is: " + input)
         Return input
     End Function
     Public Function DESEncrypt(plainText As String, password As String) As String
         Dim keyBytes As Byte() = Encoding.UTF8.GetBytes(password)
         Dim ivBytes As Byte() = Encoding.UTF8.GetBytes(password)
         Dim output As String
-        Using desAlg As DESCryptoServiceProvider = New DESCryptoServiceProvider()
-            desAlg.Key = keyBytes
-            desAlg.IV = ivBytes
+        Try
+            Using desAlg As DESCryptoServiceProvider = New DESCryptoServiceProvider()
+                desAlg.Key = keyBytes
+                desAlg.IV = ivBytes
 
-            Using encryptor As ICryptoTransform = desAlg.CreateEncryptor(keyBytes, ivBytes)
-                Using msEncrypt As New MemoryStream()
-                    Using csEncrypt As New CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write)
-                        Using swEncrypt As New StreamWriter(csEncrypt)
-                            swEncrypt.Write(plainText)
+                Using encryptor As ICryptoTransform = desAlg.CreateEncryptor(keyBytes, ivBytes)
+                    Using msEncrypt As New MemoryStream()
+                        Using csEncrypt As New CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write)
+                            Using swEncrypt As New StreamWriter(csEncrypt)
+                                swEncrypt.Write(plainText)
+                            End Using
                         End Using
+                        output = Convert.ToBase64String(msEncrypt.ToArray())
                     End Using
-                    output = Convert.ToBase64String(msEncrypt.ToArray())
                 End Using
             End Using
-        End Using
-        ConvertToKiB(output, 1)
-        Return output
+            ConvertToKiB(output, 1)
+            Logger_log("DES encrypted: " + output)
+            Return output
+        Catch ex As Exception
+            Logger_log("DES thrown an error: " + ex.Message)
+        End Try
     End Function
     Public Function DESDecrypt(encryptedText As String, password As String) As String
         Dim keyBytes As Byte() = Encoding.UTF8.GetBytes(password)
@@ -99,7 +109,7 @@ Module EncryptionProviders
         Try
             encryptedBytes = Convert.FromBase64String(encryptedText)
         Catch ex As Exception
-            Debug.WriteLine("ex: " + ex.Message)
+            Logger_log("DES thrown an error: " + ex.Message)
             errors = True
         End Try
         Dim output As String
@@ -115,6 +125,7 @@ Module EncryptionProviders
                                 Try
                                     output = srDecrypt.ReadToEnd()
                                 Catch ex As Exception
+                                    Logger_log("DES thrown an error: " + ex.Message)
                                     output = ex.Message
                                 End Try
                             End Using
@@ -126,12 +137,13 @@ Module EncryptionProviders
             output = "Padding is invalid and cannot be removed."
         End If
         ConvertToKiB(output, 1)
+        Logger_log("DES decrypted: " + output)
         Return output
     End Function
     Public Function IDEAEncrypt(data As String, password As String)
         Dim key As Byte() = Encoding.UTF8.GetBytes(password)
         If key.Length < 16 Then
-            Throw New ArgumentException("Uh oh. The length was fucked.")
+            Logger_log("IDEA thrown an error: password length is not enough")
         End If
         Dim cipher As IBufferedCipher = CipherUtilities.GetCipher("IDEA/ECB/PKCS7Padding")
         Dim parameters As KeyParameter = New KeyParameter(key)
@@ -139,19 +151,34 @@ Module EncryptionProviders
         Dim dataToEncrypt As Byte() = Encoding.UTF8.GetBytes(data)
         Dim encryptedData As Byte() = cipher.DoFinal(dataToEncrypt)
         Dim encryptedText As String = Convert.ToBase64String(encryptedData)
+        Logger_log("IDEA encrypted: " + encryptedText)
         Return encryptedText
     End Function
     Public Function IDEADecrypt(encryptedText As String, password As String)
         Dim key As Byte() = Encoding.UTF8.GetBytes(password)
+        Dim errors As Boolean
         If key.Length < 16 Then
-            Throw New ArgumentException("Uh oh. The length was fucked.")
+            Logger_log("IDEA thrown an error: password length is not enough")
         End If
         Dim cipher As IBufferedCipher = CipherUtilities.GetCipher("IDEA/ECB/PKCS7Padding")
         Dim parameters As KeyParameter = New KeyParameter(key)
         cipher.Init(False, parameters)
         Dim encryptedData As Byte() = Convert.FromBase64String(encryptedText)
-        Dim decryptedData As Byte() = cipher.DoFinal(encryptedData)
-        Dim decryptedText As String = Encoding.UTF8.GetString(decryptedData)
-        Return decryptedText
+        Dim decryptedData As Byte()
+        Try
+            decryptedData = cipher.DoFinal(encryptedData)
+        Catch ex As Exception
+            Logger_log("IDEA thrown an error: " + ex.Message)
+            errors = True
+        End Try
+        If errors = False Then
+            Dim decryptedText As String = Encoding.UTF8.GetString(decryptedData)
+            Logger_log("IDEA decrypted: " + decryptedText)
+            Return decryptedText
+        Else
+            Dim decryptedtext As String = "failed"
+            Logger_log("IDEA failed decrypt.")
+            Return decryptedtext
+        End If
     End Function
 End Module

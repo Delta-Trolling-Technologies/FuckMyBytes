@@ -34,22 +34,23 @@ Partial Class Form1
         StringEncrypt_Pwd = New TextBox()
         StringEncrypt_String = New TextBox()
         TabPage2 = New TabPage()
+        TabPage3 = New TabPage()
+        Tester_Output = New RichTextBox()
+        Button4 = New Button()
+        Tester_Pass = New TextBox()
+        Tester_String = New TextBox()
+        Label4 = New Label()
+        Tester_Technology = New ComboBox()
+        TabPage4 = New TabPage()
+        Logs = New RichTextBox()
         ComboBox1 = New ComboBox()
         StatusStrip1 = New StatusStrip()
-        Status = New ToolStripStatusLabel()
-        ToolStripProgressBar1 = New ToolStripProgressBar()
         Statistic = New ToolStripStatusLabel()
-        TabPage3 = New TabPage()
-        Tester_Technology = New ComboBox()
-        Label4 = New Label()
-        Tester_String = New TextBox()
-        Tester_Pass = New TextBox()
-        Button4 = New Button()
-        Tester_Output = New RichTextBox()
         TabControl1.SuspendLayout()
         TabPage1.SuspendLayout()
-        StatusStrip1.SuspendLayout()
         TabPage3.SuspendLayout()
+        TabPage4.SuspendLayout()
+        StatusStrip1.SuspendLayout()
         SuspendLayout()
         ' 
         ' Label2
@@ -76,6 +77,7 @@ Partial Class Form1
         TabControl1.Controls.Add(TabPage1)
         TabControl1.Controls.Add(TabPage2)
         TabControl1.Controls.Add(TabPage3)
+        TabControl1.Controls.Add(TabPage4)
         TabControl1.Location = New Point(12, 39)
         TabControl1.Name = "TabControl1"
         TabControl1.SelectedIndex = 0
@@ -175,48 +177,6 @@ Partial Class Form1
         TabPage2.Text = "File"
         TabPage2.UseVisualStyleBackColor = True
         ' 
-        ' ComboBox1
-        ' 
-        ComboBox1.DropDownStyle = ComboBoxStyle.DropDownList
-        ComboBox1.FormattingEnabled = True
-        ComboBox1.Items.AddRange(New Object() {"Non-Destructive (Encrypt/Decrypt)", "Destructive (Encrypt only)"})
-        ComboBox1.Location = New Point(12, 9)
-        ComboBox1.Name = "ComboBox1"
-        ComboBox1.Size = New Size(211, 23)
-        ComboBox1.TabIndex = 10
-        ' 
-        ' StatusStrip1
-        ' 
-        StatusStrip1.Items.AddRange(New ToolStripItem() {Status, ToolStripProgressBar1, Statistic})
-        StatusStrip1.Location = New Point(0, 441)
-        StatusStrip1.Name = "StatusStrip1"
-        StatusStrip1.RenderMode = ToolStripRenderMode.Professional
-        StatusStrip1.Size = New Size(800, 22)
-        StatusStrip1.SizingGrip = False
-        StatusStrip1.TabIndex = 11
-        StatusStrip1.Text = "StatusStrip1"
-        ' 
-        ' Status
-        ' 
-        Status.ForeColor = Color.Black
-        Status.Name = "Status"
-        Status.Size = New Size(26, 17)
-        Status.Text = "Idle"
-        ' 
-        ' ToolStripProgressBar1
-        ' 
-        ToolStripProgressBar1.Name = "ToolStripProgressBar1"
-        ToolStripProgressBar1.Size = New Size(100, 16)
-        ToolStripProgressBar1.Step = 1
-        ToolStripProgressBar1.Style = ProgressBarStyle.Continuous
-        ' 
-        ' Statistic
-        ' 
-        Statistic.ForeColor = Color.Black
-        Statistic.Name = "Statistic"
-        Statistic.Size = New Size(137, 17)
-        Statistic.Text = "Processed: 0KiB/s 0KiB/p"
-        ' 
         ' TabPage3
         ' 
         TabPage3.BackColor = Color.Black
@@ -233,40 +193,15 @@ Partial Class Form1
         TabPage3.TabIndex = 2
         TabPage3.Text = "Tester"
         ' 
-        ' Tester_Technology
+        ' Tester_Output
         ' 
-        Tester_Technology.DropDownStyle = ComboBoxStyle.DropDownList
-        Tester_Technology.FormattingEnabled = True
-        Tester_Technology.Items.AddRange(New Object() {"AES Encrypt (Plain password)", "AES Decrypt (Plain password)", "SHA512", "FMB-SHA512x100", "DES Encrypt (Plain password max:8 char)", "DES Decrypt (Plain password max:8 char)", "IDEA Encrypt (Plain password max:8 char)", "IDEA Decrypt (Plain password max:8 char)"})
-        Tester_Technology.Location = New Point(6, 21)
-        Tester_Technology.Name = "Tester_Technology"
-        Tester_Technology.Size = New Size(756, 23)
-        Tester_Technology.TabIndex = 0
-        ' 
-        ' Label4
-        ' 
-        Label4.AutoSize = True
-        Label4.Location = New Point(6, 3)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(68, 15)
-        Label4.TabIndex = 1
-        Label4.Text = "Technology"
-        ' 
-        ' Tester_String
-        ' 
-        Tester_String.Location = New Point(6, 50)
-        Tester_String.Name = "Tester_String"
-        Tester_String.PlaceholderText = "String (input)"
-        Tester_String.Size = New Size(756, 23)
-        Tester_String.TabIndex = 2
-        ' 
-        ' Tester_Pass
-        ' 
-        Tester_Pass.Location = New Point(6, 79)
-        Tester_Pass.Name = "Tester_Pass"
-        Tester_Pass.PlaceholderText = "Password (optional)"
-        Tester_Pass.Size = New Size(675, 23)
-        Tester_Pass.TabIndex = 3
+        Tester_Output.BackColor = Color.FromArgb(CByte(64), CByte(64), CByte(64))
+        Tester_Output.ForeColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
+        Tester_Output.Location = New Point(6, 108)
+        Tester_Output.Name = "Tester_Output"
+        Tester_Output.Size = New Size(756, 257)
+        Tester_Output.TabIndex = 5
+        Tester_Output.Text = ""
         ' 
         ' Button4
         ' 
@@ -278,15 +213,91 @@ Partial Class Form1
         Button4.Text = "$Execute$"
         Button4.UseVisualStyleBackColor = True
         ' 
-        ' Tester_Output
+        ' Tester_Pass
         ' 
-        Tester_Output.BackColor = Color.FromArgb(CByte(64), CByte(64), CByte(64))
-        Tester_Output.ForeColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
-        Tester_Output.Location = New Point(6, 108)
-        Tester_Output.Name = "Tester_Output"
-        Tester_Output.Size = New Size(756, 257)
-        Tester_Output.TabIndex = 5
-        Tester_Output.Text = ""
+        Tester_Pass.Location = New Point(6, 79)
+        Tester_Pass.Name = "Tester_Pass"
+        Tester_Pass.PlaceholderText = "Password (optional)"
+        Tester_Pass.Size = New Size(675, 23)
+        Tester_Pass.TabIndex = 3
+        ' 
+        ' Tester_String
+        ' 
+        Tester_String.Location = New Point(6, 50)
+        Tester_String.Name = "Tester_String"
+        Tester_String.PlaceholderText = "String (input)"
+        Tester_String.Size = New Size(756, 23)
+        Tester_String.TabIndex = 2
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.Location = New Point(6, 3)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(68, 15)
+        Label4.TabIndex = 1
+        Label4.Text = "Technology"
+        ' 
+        ' Tester_Technology
+        ' 
+        Tester_Technology.DropDownStyle = ComboBoxStyle.DropDownList
+        Tester_Technology.FormattingEnabled = True
+        Tester_Technology.Items.AddRange(New Object() {"AES Encrypt (Plain password)", "AES Decrypt (Plain password)", "SHA512", "FMB-SHA512x100", "DES Encrypt (Plain password max:8 char)", "DES Decrypt (Plain password max:8 char)", "IDEA Encrypt (Plain password max:8 char)", "IDEA Decrypt (Plain password max:8 char)"})
+        Tester_Technology.Location = New Point(6, 21)
+        Tester_Technology.Name = "Tester_Technology"
+        Tester_Technology.Size = New Size(756, 23)
+        Tester_Technology.TabIndex = 0
+        ' 
+        ' TabPage4
+        ' 
+        TabPage4.BackColor = Color.Black
+        TabPage4.Controls.Add(Logs)
+        TabPage4.Location = New Point(4, 24)
+        TabPage4.Name = "TabPage4"
+        TabPage4.Padding = New Padding(3)
+        TabPage4.Size = New Size(768, 371)
+        TabPage4.TabIndex = 3
+        TabPage4.Text = "Logs"
+        ' 
+        ' Logs
+        ' 
+        Logs.BackColor = Color.Black
+        Logs.BorderStyle = BorderStyle.None
+        Logs.ForeColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
+        Logs.Location = New Point(6, 6)
+        Logs.Name = "Logs"
+        Logs.ReadOnly = True
+        Logs.Size = New Size(756, 359)
+        Logs.TabIndex = 0
+        Logs.Text = ""
+        ' 
+        ' ComboBox1
+        ' 
+        ComboBox1.DropDownStyle = ComboBoxStyle.DropDownList
+        ComboBox1.FormattingEnabled = True
+        ComboBox1.Items.AddRange(New Object() {"Non-Destructive (Encrypt/Decrypt)", "Destructive (Encrypt only)"})
+        ComboBox1.Location = New Point(12, 9)
+        ComboBox1.Name = "ComboBox1"
+        ComboBox1.Size = New Size(211, 23)
+        ComboBox1.TabIndex = 10
+        ' 
+        ' StatusStrip1
+        ' 
+        StatusStrip1.Items.AddRange(New ToolStripItem() {Statistic})
+        StatusStrip1.Location = New Point(0, 441)
+        StatusStrip1.Name = "StatusStrip1"
+        StatusStrip1.RenderMode = ToolStripRenderMode.Professional
+        StatusStrip1.Size = New Size(800, 22)
+        StatusStrip1.SizingGrip = False
+        StatusStrip1.TabIndex = 11
+        StatusStrip1.Text = "StatusStrip1"
+        ' 
+        ' Statistic
+        ' 
+        Statistic.ForeColor = Color.Black
+        Statistic.Name = "Statistic"
+        Statistic.Size = New Size(137, 17)
+        Statistic.Text = "Processed: 0KiB/s 0KiB/p"
         ' 
         ' Form1
         ' 
@@ -299,16 +310,22 @@ Partial Class Form1
         Controls.Add(Label2)
         Controls.Add(Label3)
         Controls.Add(TabControl1)
+        DoubleBuffered = True
         ForeColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
+        FormBorderStyle = FormBorderStyle.FixedSingle
+        MaximizeBox = False
         Name = "Form1"
+        SizeGripStyle = SizeGripStyle.Hide
+        StartPosition = FormStartPosition.CenterScreen
         Text = "FuckMyBytes"
         TabControl1.ResumeLayout(False)
         TabPage1.ResumeLayout(False)
         TabPage1.PerformLayout()
-        StatusStrip1.ResumeLayout(False)
-        StatusStrip1.PerformLayout()
         TabPage3.ResumeLayout(False)
         TabPage3.PerformLayout()
+        TabPage4.ResumeLayout(False)
+        StatusStrip1.ResumeLayout(False)
+        StatusStrip1.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -319,8 +336,6 @@ Partial Class Form1
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents ComboBox1 As ComboBox
     Friend WithEvents StatusStrip1 As StatusStrip
-    Friend WithEvents Status As ToolStripStatusLabel
-    Friend WithEvents ToolStripProgressBar1 As ToolStripProgressBar
     Friend WithEvents StringEncrypt_String As TextBox
     Friend WithEvents StringEncrypt_Pwd As TextBox
     Friend WithEvents Button1 As Button
@@ -336,4 +351,6 @@ Partial Class Form1
     Friend WithEvents Button4 As Button
     Friend WithEvents Tester_Pass As TextBox
     Friend WithEvents Tester_Output As RichTextBox
+    Friend WithEvents TabPage4 As TabPage
+    Friend WithEvents Logs As RichTextBox
 End Class
