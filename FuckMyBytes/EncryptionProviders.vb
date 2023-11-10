@@ -146,8 +146,7 @@ Module EncryptionProviders
             Logger_log("IDEA thrown an error: password length is not enough")
         End If
         Dim cipher As IBufferedCipher = CipherUtilities.GetCipher("IDEA/ECB/PKCS7Padding")
-        Dim parameters As KeyParameter = New KeyParameter(key)
-        cipher.Init(True, parameters)
+        cipher.Init(True, New KeyParameter(key))
         Dim dataToEncrypt As Byte() = Encoding.UTF8.GetBytes(data)
         Dim encryptedData As Byte() = cipher.DoFinal(dataToEncrypt)
         Dim encryptedText As String = Convert.ToBase64String(encryptedData)
@@ -161,8 +160,7 @@ Module EncryptionProviders
             Logger_log("IDEA thrown an error: password length is not enough")
         End If
         Dim cipher As IBufferedCipher = CipherUtilities.GetCipher("IDEA/ECB/PKCS7Padding")
-        Dim parameters As KeyParameter = New KeyParameter(key)
-        cipher.Init(False, parameters)
+        cipher.Init(False, New KeyParameter(key))
         Dim encryptedData As Byte() = Convert.FromBase64String(encryptedText)
         Dim decryptedData As Byte()
         Try

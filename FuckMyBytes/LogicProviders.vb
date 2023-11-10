@@ -3,8 +3,7 @@
         Dim shortenedHash As String
         If hashValue.Length < length Then
             Dim charactersToAdd As Integer = length - hashValue.Length
-            Dim additionalChars As String = New String("X"c, charactersToAdd)
-            shortenedHash = hashValue & additionalChars
+            shortenedHash = hashValue & New String("X"c, charactersToAdd)
         Else
             shortenedHash = hashValue.Substring(0, length)
         End If
