@@ -2,61 +2,61 @@
 Imports System.Security.Cryptography
 Imports System.Text
 Imports Org.BouncyCastle.Crypto
-Imports Org.BouncyCastle.Crypto.Engines
-Imports Org.BouncyCastle.Crypto.Generators
-Imports Org.BouncyCastle.Crypto.Modes
-Imports Org.BouncyCastle.Crypto.Paddings
 Imports Org.BouncyCastle.Crypto.Parameters
 Imports Org.BouncyCastle.Security
 
 Module EncryptionProviders
     Public Function AES_Encrypt(ByVal input As String, ByVal pass As String) As String
-        Dim AES As New Security.Cryptography.RijndaelManaged
-        Dim Hash_AES As New Security.Cryptography.MD5CryptoServiceProvider
-        Dim encrypted As String = ""
-        Try
-            Dim hash(31) As Byte
-            Dim temp As Byte() = Hash_AES.ComputeHash(System.Text.ASCIIEncoding.ASCII.GetBytes(pass))
-            Array.Copy(temp, 0, hash, 0, 16)
-            Array.Copy(temp, 0, hash, 15, 16)
-            AES.Key = hash
-            AES.Mode = Security.Cryptography.CipherMode.ECB
-            Dim DESEncrypter As System.Security.Cryptography.ICryptoTransform = AES.CreateEncryptor
-            Dim Buffer As Byte() = System.Text.ASCIIEncoding.ASCII.GetBytes(input)
-            encrypted = Convert.ToBase64String(DESEncrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
-            ConvertToKiB(encrypted, 1)
-            Logger_log("AES encrypted: " + encrypted)
-            Return encrypted
-        Catch ex As Exception
-            Logger_log("AES thrown an error: " + ex.Message)
-            Return ex.Message
-        End Try
+        Using AES As New RijndaelManaged
+            Using Hash_AES As New MD5CryptoServiceProvider
+                Dim encrypted As String = ""
+                Try
+                    Dim hash(31) As Byte
+                    Dim temp As Byte() = Hash_AES.ComputeHash(Encoding.ASCII.GetBytes(pass))
+                    Array.Copy(temp, 0, hash, 0, 16)
+                    Array.Copy(temp, 0, hash, 15, 16)
+                    AES.Key = hash
+                    AES.Mode = CipherMode.ECB
+                    Dim DESEncrypter As ICryptoTransform = AES.CreateEncryptor
+                    Dim Buffer As Byte() = Encoding.ASCII.GetBytes(input)
+                    encrypted = Convert.ToBase64String(DESEncrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
+                    ConvertToKiB(encrypted, 1)
+                    Logger_log("AES encrypted: " + encrypted)
+                    Return encrypted
+                Catch ex As Exception
+                    Logger_log("AES thrown an error: " + ex.Message)
+                    Return ex.Message
+                End Try
+            End Using
+        End Using
     End Function
     Public Function AES_Decrypt(ByVal input As String, ByVal pass As String) As String
-        Dim AES As New Security.Cryptography.RijndaelManaged
-        Dim Hash_AES As New Security.Cryptography.MD5CryptoServiceProvider
-        Dim decrypted As String = ""
-        Try
-            Dim hash(31) As Byte
-            Dim temp As Byte() = Hash_AES.ComputeHash(System.Text.ASCIIEncoding.ASCII.GetBytes(pass))
-            Array.Copy(temp, 0, hash, 0, 16)
-            Array.Copy(temp, 0, hash, 15, 16)
-            AES.Key = hash
-            AES.Mode = Security.Cryptography.CipherMode.ECB
-            Dim DESDecrypter As System.Security.Cryptography.ICryptoTransform = AES.CreateDecryptor
-            Dim Buffer As Byte() = Convert.FromBase64String(input)
-            decrypted = System.Text.ASCIIEncoding.ASCII.GetString(DESDecrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
-            ConvertToKiB(decrypted, 1)
-            Logger_log("AES decrypted: " + decrypted)
-            Return decrypted
-        Catch ex As Exception
-            Logger_log("AES thrown an error: " + ex.Message)
-            If ex.Message = "Padding is invalid and cannot be removed." Then
-                Return "String decryption failed. Password not correct?"
-            Else
-                Return ex.Message
-            End If
-        End Try
+        Using AES As New RijndaelManaged
+            Using Hash_AES As New MD5CryptoServiceProvider
+                Dim decrypted As String = ""
+                Try
+                    Dim hash(31) As Byte
+                    Dim temp As Byte() = Hash_AES.ComputeHash(Encoding.ASCII.GetBytes(pass))
+                    Array.Copy(temp, 0, hash, 0, 16)
+                    Array.Copy(temp, 0, hash, 15, 16)
+                    AES.Key = hash
+                    AES.Mode = CipherMode.ECB
+                    Dim DESDecrypter As ICryptoTransform = AES.CreateDecryptor
+                    Dim Buffer As Byte() = Convert.FromBase64String(input)
+                    decrypted = Encoding.ASCII.GetString(DESDecrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
+                    ConvertToKiB(decrypted, 1)
+                    Logger_log("AES decrypted: " + decrypted)
+                    Return decrypted
+                Catch ex As Exception
+                    Logger_log("AES thrown an error: " + ex.Message)
+                    If ex.Message = "Padding is invalid and cannot be removed." Then
+                        Return "String decryption failed. Password not correct?"
+                    Else
+                        Return ex.Message
+                    End If
+                End Try
+            End Using
+        End Using
     End Function
     Public Function SHA512(ByVal input As String) As String
         Dim data As Byte() = Encoding.UTF8.GetBytes(input)
@@ -82,7 +82,6 @@ Module EncryptionProviders
             Using desAlg As DESCryptoServiceProvider = New DESCryptoServiceProvider()
                 desAlg.Key = keyBytes
                 desAlg.IV = ivBytes
-
                 Using encryptor As ICryptoTransform = desAlg.CreateEncryptor(keyBytes, ivBytes)
                     Using msEncrypt As New MemoryStream()
                         Using csEncrypt As New CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write)
@@ -99,6 +98,7 @@ Module EncryptionProviders
             Return output
         Catch ex As Exception
             Logger_log("DES thrown an error: " + ex.Message)
+            Return 0
         End Try
     End Function
     Public Function DESDecrypt(encryptedText As String, password As String) As String

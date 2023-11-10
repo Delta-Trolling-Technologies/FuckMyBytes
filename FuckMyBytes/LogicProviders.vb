@@ -19,8 +19,10 @@
             Form1.stringbytes = Form1.stringbytes + kibibytes
         End If
         Form1.Statistic.Text = "Processed: " + Form1.stringbytes.ToString("F2") + "KiB/s " + Form1.passbytes.ToString("F2") + "KiB/p"
+        Return 0
     End Function
     Public Function Logger_log(ByVal input As String)
         Form1.Logs.Text = Form1.Logs.Text + vbCrLf + input
+        Return 0
     End Function
 End Module
