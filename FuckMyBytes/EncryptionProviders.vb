@@ -4,7 +4,6 @@ Imports System.Text
 Imports Org.BouncyCastle.Crypto
 Imports Org.BouncyCastle.Crypto.Parameters
 Imports Org.BouncyCastle.Security
-
 Module EncryptionProviders
     Public Function AES_Encrypt(ByVal input As String, ByVal pass As String) As String
         Using AES As New RijndaelManaged
@@ -117,7 +116,6 @@ Module EncryptionProviders
             Using desAlg As DESCryptoServiceProvider = New DESCryptoServiceProvider()
                 desAlg.Key = keyBytes
                 desAlg.IV = ivBytes
-
                 Using decryptor As ICryptoTransform = desAlg.CreateDecryptor(keyBytes, ivBytes)
                     Using msDecrypt As New MemoryStream(encryptedBytes)
                         Using csDecrypt As New CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read)
@@ -175,8 +173,54 @@ Module EncryptionProviders
             Return decryptedText
         Else
             Dim decryptedtext As String = "failed"
-            Logger_log("IDEA failed decrypt.")
+            Logger_log("IDEA failed decryption.")
             Return decryptedtext
         End If
+    End Function
+    Public Function TripleDESEncrypt(data As String, password As String) As String
+        Dim tripleDesAlg As New TripleDESCryptoServiceProvider()
+        Dim key As Byte() = TDESGen(password)
+        Dim iv As Byte() = New Byte() {0, 0, 0, 0, 0, 0, 0, 0}
+        tripleDesAlg.Key = key
+        tripleDesAlg.IV = iv
+        Dim encryptor As ICryptoTransform = tripleDesAlg.CreateEncryptor()
+        Dim dataBytes As Byte() = Encoding.UTF8.GetBytes(data)
+        Dim encryptedData As Byte() = encryptor.TransformFinalBlock(dataBytes, 0, dataBytes.Length)
+        Dim output As String = Convert.ToBase64String(encryptedData)
+        Logger_log("3DES encrypted: " + output)
+        Return output
+    End Function
+
+    Public Function TripleDESDecrypt(encryptedData As String, password As String) As String
+        Dim tripleDesAlg As New TripleDESCryptoServiceProvider()
+        Dim errors As Boolean
+        Dim key As Byte() = TDESGen(password)
+        Dim iv As Byte() = New Byte() {0, 0, 0, 0, 0, 0, 0, 0}
+        tripleDesAlg.Key = key
+        tripleDesAlg.IV = iv
+        Dim decryptor As ICryptoTransform = tripleDesAlg.CreateDecryptor()
+        Dim encryptedBytes As Byte() = Convert.FromBase64String(encryptedData)
+        Dim decryptedBytes As Byte()
+        Try
+            decryptedBytes = decryptor.TransformFinalBlock(encryptedBytes, 0, encryptedBytes.Length)
+        Catch ex As Exception
+            Logger_log("3DES thrown an error: " + ex.Message)
+            errors = True
+        End Try
+        If errors = False Then
+            Dim output As String = Encoding.UTF8.GetString(decryptedBytes)
+            Logger_log("3DES decrypted: " + output)
+            Return output
+        Else
+            Dim output As String = "failed"
+            Logger_log("3DES failed decryption.")
+            Return output
+        End If
+    End Function
+    Public Function TDESGen(password As String) As Byte()
+        Dim sha1 As New SHA1CryptoServiceProvider()
+        Dim keyBytes As Byte() = sha1.ComputeHash(Encoding.UTF8.GetBytes(password))
+        Array.Resize(keyBytes, 24)
+        Return keyBytes
     End Function
 End Module

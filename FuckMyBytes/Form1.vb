@@ -1,4 +1,5 @@
-﻿Imports System.Text
+﻿Imports System.Security.Cryptography
+Imports System.Text
 
 Public Class Form1
     Public mode As Integer
@@ -10,7 +11,7 @@ Public Class Form1
         ComboBox1.SelectedItem = ComboBox1.Items.Item(0)
         Tester_Technology.SelectedItem = Tester_Technology.Items.Item(0)
         mode = 0
-        enableDecrypt()
+        EnableDecrypt()
         passbytes = 0
         stringbytes = 0
     End Sub
@@ -22,29 +23,35 @@ Public Class Form1
         Dim encryptstring As String = "Im nothing like yall" + Convert.ToBase64String(stringBytes)
         Dim AESstring As String = AES_Encrypt(encryptstring, hashedpass)
         Dim DESstring As String = DESEncrypt(AESstring, LengthController(hashedpass, 8))
-        StringEncrypt_Output.Text = IDEAEncrypt(DESstring, LengthController(hashedpass, 128))
+        Dim IDEAstring As String = IDEAEncrypt(DESstring, LengthController(hashedpass, 128))
+        StringEncrypt_Output.Text = TripleDESEncrypt(IDEAstring, hashedpass)
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Logger_log("-----------")
         Dim hashedpass As String = SHAPassgen(StringEncrypt_Pwd.Text)
-        Dim output As String = IDEADecrypt(StringEncrypt_String.Text, LengthController(hashedpass, 128))
+        Dim output As String = TripleDESDecrypt(StringEncrypt_String.Text, hashedpass)
         If output = "failed" Then
             StringEncrypt_Output.Text = "String decryption failed. Password not correct?"
         Else
-            output = DESDecrypt(output, LengthController(hashedpass, 8))
-            If output = "Padding is invalid and cannot be removed." Then
+            output = IDEADecrypt(output, LengthController(hashedpass, 128))
+            If output = "failed" Then
                 StringEncrypt_Output.Text = "String decryption failed. Password not correct?"
             Else
-                output = AES_Decrypt(output, hashedpass)
-                If output = "String decryption failed. Password not correct?" Then
-                    StringEncrypt_Output.Text = output
+                output = DESDecrypt(output, LengthController(hashedpass, 8))
+                If output = "Padding is invalid and cannot be removed." Then
+                    StringEncrypt_Output.Text = "String decryption failed. Password not correct?"
                 Else
-                    output = output.Remove(0, "Im nothing like yall".Length)
-                    Dim outputbytes As Byte()
-                    outputbytes = Convert.FromBase64String(output)
-                    Dim aesdecrypted As String = utf8.GetString(outputbytes)
-                    StringEncrypt_Output.Text = aesdecrypted
+                    output = AES_Decrypt(output, hashedpass)
+                    If output = "String decryption failed. Password not correct?" Then
+                        StringEncrypt_Output.Text = output
+                    Else
+                        output = output.Remove(0, "Im nothing like yall".Length)
+                        Dim outputbytes As Byte()
+                        outputbytes = Convert.FromBase64String(output)
+                        Dim aesdecrypted As String = utf8.GetString(outputbytes)
+                        StringEncrypt_Output.Text = aesdecrypted
+                    End If
                 End If
             End If
         End If
@@ -53,10 +60,10 @@ Public Class Form1
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         If ComboBox1.SelectedItem = ComboBox1.Items.Item(0) Then
             mode = 0
-            enableDecrypt()
+            EnableDecrypt()
         ElseIf ComboBox1.SelectedItem = ComboBox1.Items.Item(1) Then
             mode = 1
-            disableDecrypt()
+            DisableDecrypt()
         End If
     End Sub
 
@@ -83,3 +90,4 @@ Public Class Form1
         Tester_Output.Text = output
     End Sub
 End Class
+' felakasztom magam
