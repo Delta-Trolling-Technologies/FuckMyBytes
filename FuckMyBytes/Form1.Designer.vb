@@ -22,6 +22,7 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Label2 = New Label()
         Label3 = New Label()
         TabControl1 = New TabControl()
@@ -48,15 +49,24 @@ Partial Class Form1
         Tester_Technology = New ComboBox()
         TabPage4 = New TabPage()
         Logs = New RichTextBox()
+        TabPage5 = New TabPage()
+        Button8 = New Button()
+        RichTextBox1 = New RichTextBox()
+        Label7 = New Label()
+        PWDFileGen_Pass = New TextBox()
+        Button7 = New Button()
+        Label5 = New Label()
         ComboBox1 = New ComboBox()
         StatusStrip1 = New StatusStrip()
         Statistic = New ToolStripStatusLabel()
         OpenFileDialog1 = New OpenFileDialog()
+        SaveFileDialog1 = New SaveFileDialog()
         TabControl1.SuspendLayout()
         TabPage1.SuspendLayout()
         TabPage2.SuspendLayout()
         TabPage3.SuspendLayout()
         TabPage4.SuspendLayout()
+        TabPage5.SuspendLayout()
         StatusStrip1.SuspendLayout()
         SuspendLayout()
         ' 
@@ -85,6 +95,7 @@ Partial Class Form1
         TabControl1.Controls.Add(TabPage2)
         TabControl1.Controls.Add(TabPage3)
         TabControl1.Controls.Add(TabPage4)
+        TabControl1.Controls.Add(TabPage5)
         TabControl1.Location = New Point(12, 39)
         TabControl1.Name = "TabControl1"
         TabControl1.SelectedIndex = 0
@@ -162,9 +173,11 @@ Partial Class Form1
         ' 
         StringEncrypt_Pwd.Location = New Point(6, 35)
         StringEncrypt_Pwd.Name = "StringEncrypt_Pwd"
+        StringEncrypt_Pwd.PasswordChar = "*"c
         StringEncrypt_Pwd.PlaceholderText = "Encryption Password"
         StringEncrypt_Pwd.Size = New Size(511, 23)
         StringEncrypt_Pwd.TabIndex = 1
+        StringEncrypt_Pwd.UseSystemPasswordChar = True
         ' 
         ' StringEncrypt_String
         ' 
@@ -276,9 +289,11 @@ Partial Class Form1
         ' 
         Tester_Pass.Location = New Point(6, 79)
         Tester_Pass.Name = "Tester_Pass"
-        Tester_Pass.PlaceholderText = "Password (optional)"
+        Tester_Pass.PasswordChar = "*"c
+        Tester_Pass.PlaceholderText = "Password"
         Tester_Pass.Size = New Size(675, 23)
         Tester_Pass.TabIndex = 3
+        Tester_Pass.UseSystemPasswordChar = True
         ' 
         ' Tester_String
         ' 
@@ -329,6 +344,85 @@ Partial Class Form1
         Logs.Size = New Size(756, 359)
         Logs.TabIndex = 0
         Logs.Text = ""
+        ' 
+        ' TabPage5
+        ' 
+        TabPage5.BackColor = Color.Black
+        TabPage5.Controls.Add(Button8)
+        TabPage5.Controls.Add(RichTextBox1)
+        TabPage5.Controls.Add(Label7)
+        TabPage5.Controls.Add(PWDFileGen_Pass)
+        TabPage5.Controls.Add(Button7)
+        TabPage5.Controls.Add(Label5)
+        TabPage5.Location = New Point(4, 24)
+        TabPage5.Name = "TabPage5"
+        TabPage5.Padding = New Padding(3)
+        TabPage5.Size = New Size(768, 371)
+        TabPage5.TabIndex = 4
+        TabPage5.Text = "Key Maker"
+        ' 
+        ' Button8
+        ' 
+        Button8.ForeColor = Color.Black
+        Button8.Location = New Point(599, 50)
+        Button8.Name = "Button8"
+        Button8.Size = New Size(163, 23)
+        Button8.TabIndex = 5
+        Button8.Text = "Generate my password file!"
+        Button8.UseVisualStyleBackColor = True
+        ' 
+        ' RichTextBox1
+        ' 
+        RichTextBox1.BackColor = Color.Black
+        RichTextBox1.BorderStyle = BorderStyle.None
+        RichTextBox1.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point)
+        RichTextBox1.ForeColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
+        RichTextBox1.Location = New Point(126, 135)
+        RichTextBox1.Name = "RichTextBox1"
+        RichTextBox1.ReadOnly = True
+        RichTextBox1.ScrollBars = RichTextBoxScrollBars.None
+        RichTextBox1.Size = New Size(636, 230)
+        RichTextBox1.TabIndex = 4
+        RichTextBox1.Text = resources.GetString("RichTextBox1.Text")
+        ' 
+        ' Label7
+        ' 
+        Label7.AutoSize = True
+        Label7.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point)
+        Label7.Location = New Point(126, 111)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(108, 21)
+        Label7.TabIndex = 3
+        Label7.Text = "How it works?"
+        ' 
+        ' PWDFileGen_Pass
+        ' 
+        PWDFileGen_Pass.Location = New Point(6, 21)
+        PWDFileGen_Pass.Name = "PWDFileGen_Pass"
+        PWDFileGen_Pass.PasswordChar = "*"c
+        PWDFileGen_Pass.PlaceholderText = "Password"
+        PWDFileGen_Pass.Size = New Size(756, 23)
+        PWDFileGen_Pass.TabIndex = 2
+        PWDFileGen_Pass.UseSystemPasswordChar = True
+        ' 
+        ' Button7
+        ' 
+        Button7.ForeColor = Color.Black
+        Button7.Location = New Point(6, 50)
+        Button7.Name = "Button7"
+        Button7.Size = New Size(104, 23)
+        Button7.TabIndex = 1
+        Button7.Text = "Or generate one"
+        Button7.UseVisualStyleBackColor = True
+        ' 
+        ' Label5
+        ' 
+        Label5.AutoSize = True
+        Label5.Location = New Point(6, 3)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(87, 15)
+        Label5.TabIndex = 0
+        Label5.Text = "Enter Password"
         ' 
         ' ComboBox1
         ' 
@@ -389,6 +483,8 @@ Partial Class Form1
         TabPage3.ResumeLayout(False)
         TabPage3.PerformLayout()
         TabPage4.ResumeLayout(False)
+        TabPage5.ResumeLayout(False)
+        TabPage5.PerformLayout()
         StatusStrip1.ResumeLayout(False)
         StatusStrip1.PerformLayout()
         ResumeLayout(False)
@@ -424,4 +520,12 @@ Partial Class Form1
     Friend WithEvents Label6 As Label
     Friend WithEvents Button6 As Button
     Friend WithEvents FileEncryptor_eSize As Label
+    Friend WithEvents TabPage5 As TabPage
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Button7 As Button
+    Friend WithEvents PWDFileGen_Pass As TextBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents RichTextBox1 As RichTextBox
+    Friend WithEvents Button8 As Button
+    Friend WithEvents SaveFileDialog1 As SaveFileDialog
 End Class

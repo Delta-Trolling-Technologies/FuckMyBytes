@@ -116,5 +116,31 @@ Public Class Form1
             MessageBox.Show("You didn't choose anything")
         End If
     End Sub
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Dim password As String = GeneratePassword(RandomNumber(8, 32))
+        PWDFileGen_Pass.Text = password
+    End Sub
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Dim hashedpass As String = SHAPassgen(GeneratePassword(RandomNumber(8, 32)))
+        Dim input As String = SHAPassgen(PWDFileGen_Pass.Text)
+        input = GZIPCompress(input)
+        input = AES_Encrypt(input, hashedpass)
+        input = GZIPCompress(input)
+        input = SHAPassgen(input)
+        SaveFileDialog1.Filter = "FMB password file (*.fmbp)|*.fmbp"
+        SaveFileDialog1.Title = "Save password file"
+        If SaveFileDialog1.ShowDialog = DialogResult.OK Then
+            Try
+                Dim filePath As String = SaveFileDialog1.FileName
+                File.WriteAllText(filePath, input)
+                MessageBox.Show("Password file saved.")
+            Catch ex As Exception
+                MessageBox.Show("An error occured while saving: " + ex.Message)
+            End Try
+        Else
+            MessageBox.Show("No changes were made.")
+        End If
+    End Sub
 End Class
 ' felakasztom magam

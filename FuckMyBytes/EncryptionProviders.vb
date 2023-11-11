@@ -193,7 +193,6 @@ Module EncryptionProviders
         Logger_log("3DES encrypted: " + output)
         Return output
     End Function
-
     Public Function TripleDESDecrypt(encryptedData As String, password As String) As String
         Dim tripleDesAlg As New TripleDESCryptoServiceProvider()
         Dim errors As Boolean
