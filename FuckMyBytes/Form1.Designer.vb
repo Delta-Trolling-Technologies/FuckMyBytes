@@ -96,10 +96,10 @@ Partial Class Form1
         TabControl1.Controls.Add(TabPage3)
         TabControl1.Controls.Add(TabPage4)
         TabControl1.Controls.Add(TabPage5)
-        TabControl1.Location = New Point(12, 39)
+        TabControl1.Location = New Point(0, 39)
         TabControl1.Name = "TabControl1"
         TabControl1.SelectedIndex = 0
-        TabControl1.Size = New Size(776, 399)
+        TabControl1.Size = New Size(800, 399)
         TabControl1.TabIndex = 8
         ' 
         ' TabPage1
@@ -115,7 +115,7 @@ Partial Class Form1
         TabPage1.Location = New Point(4, 24)
         TabPage1.Name = "TabPage1"
         TabPage1.Padding = New Padding(3)
-        TabPage1.Size = New Size(768, 371)
+        TabPage1.Size = New Size(792, 371)
         TabPage1.TabIndex = 0
         TabPage1.Text = "String"
         ' 
@@ -128,7 +128,7 @@ Partial Class Form1
         StringEncrypt_Output.Location = New Point(3, 82)
         StringEncrypt_Output.Name = "StringEncrypt_Output"
         StringEncrypt_Output.ReadOnly = True
-        StringEncrypt_Output.Size = New Size(762, 286)
+        StringEncrypt_Output.Size = New Size(786, 286)
         StringEncrypt_Output.TabIndex = 6
         StringEncrypt_Output.Text = ""
         ' 
@@ -144,7 +144,7 @@ Partial Class Form1
         ' Button3
         ' 
         Button3.ForeColor = Color.Black
-        Button3.Location = New Point(523, 35)
+        Button3.Location = New Point(545, 34)
         Button3.Name = "Button3"
         Button3.Size = New Size(101, 23)
         Button3.TabIndex = 4
@@ -154,7 +154,7 @@ Partial Class Form1
         ' Button2
         ' 
         Button2.ForeColor = Color.Black
-        Button2.Location = New Point(630, 35)
+        Button2.Location = New Point(652, 35)
         Button2.Name = "Button2"
         Button2.Size = New Size(132, 23)
         Button2.TabIndex = 3
@@ -164,7 +164,7 @@ Partial Class Form1
         ' Button1
         ' 
         Button1.ForeColor = Color.Black
-        Button1.Location = New Point(630, 6)
+        Button1.Location = New Point(652, 6)
         Button1.Name = "Button1"
         Button1.Size = New Size(132, 23)
         Button1.TabIndex = 2
@@ -179,7 +179,7 @@ Partial Class Form1
         StringEncrypt_Pwd.Name = "StringEncrypt_Pwd"
         StringEncrypt_Pwd.PasswordChar = "*"c
         StringEncrypt_Pwd.PlaceholderText = "Encryption Password"
-        StringEncrypt_Pwd.Size = New Size(511, 23)
+        StringEncrypt_Pwd.Size = New Size(533, 23)
         StringEncrypt_Pwd.TabIndex = 1
         StringEncrypt_Pwd.UseSystemPasswordChar = True
         ' 
@@ -189,7 +189,7 @@ Partial Class Form1
         StringEncrypt_String.Location = New Point(6, 6)
         StringEncrypt_String.Name = "StringEncrypt_String"
         StringEncrypt_String.PlaceholderText = "String"
-        StringEncrypt_String.Size = New Size(618, 23)
+        StringEncrypt_String.Size = New Size(640, 23)
         StringEncrypt_String.TabIndex = 0
         ' 
         ' TabPage2
@@ -203,7 +203,7 @@ Partial Class Form1
         TabPage2.Location = New Point(4, 24)
         TabPage2.Name = "TabPage2"
         TabPage2.Padding = New Padding(3)
-        TabPage2.Size = New Size(768, 371)
+        TabPage2.Size = New Size(792, 371)
         TabPage2.TabIndex = 1
         TabPage2.Text = "File"
         ' 
@@ -266,7 +266,7 @@ Partial Class Form1
         TabPage3.Location = New Point(4, 24)
         TabPage3.Name = "TabPage3"
         TabPage3.Padding = New Padding(3)
-        TabPage3.Size = New Size(768, 371)
+        TabPage3.Size = New Size(792, 371)
         TabPage3.TabIndex = 2
         TabPage3.Text = "Tester"
         ' 
@@ -278,14 +278,14 @@ Partial Class Form1
         Tester_Output.ForeColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
         Tester_Output.Location = New Point(3, 111)
         Tester_Output.Name = "Tester_Output"
-        Tester_Output.Size = New Size(762, 257)
+        Tester_Output.Size = New Size(786, 257)
         Tester_Output.TabIndex = 5
         Tester_Output.Text = ""
         ' 
         ' Button4
         ' 
         Button4.ForeColor = Color.Black
-        Button4.Location = New Point(687, 78)
+        Button4.Location = New Point(709, 78)
         Button4.Name = "Button4"
         Button4.Size = New Size(75, 23)
         Button4.TabIndex = 4
@@ -299,7 +299,7 @@ Partial Class Form1
         Tester_Pass.Name = "Tester_Pass"
         Tester_Pass.PasswordChar = "*"c
         Tester_Pass.PlaceholderText = "Password"
-        Tester_Pass.Size = New Size(675, 23)
+        Tester_Pass.Size = New Size(697, 23)
         Tester_Pass.TabIndex = 3
         Tester_Pass.UseSystemPasswordChar = True
         ' 
@@ -309,7 +309,7 @@ Partial Class Form1
         Tester_String.Location = New Point(6, 50)
         Tester_String.Name = "Tester_String"
         Tester_String.PlaceholderText = "String (input)"
-        Tester_String.Size = New Size(756, 23)
+        Tester_String.Size = New Size(778, 23)
         Tester_String.TabIndex = 2
         ' 
         ' Label4
@@ -328,7 +328,7 @@ Partial Class Form1
         Tester_Technology.Items.AddRange(New Object() {"AES Encrypt (Plain password)", "AES Decrypt (Plain password)", "SHA512", "FMB-SHA512x100", "DES Encrypt (Plain password max:8 char)", "DES Decrypt (Plain password max:8 char)", "IDEA Encrypt (Plain password max:8 char)", "IDEA Decrypt (Plain password max:8 char)"})
         Tester_Technology.Location = New Point(6, 21)
         Tester_Technology.Name = "Tester_Technology"
-        Tester_Technology.Size = New Size(756, 23)
+        Tester_Technology.Size = New Size(778, 23)
         Tester_Technology.TabIndex = 0
         ' 
         ' TabPage4
@@ -338,7 +338,7 @@ Partial Class Form1
         TabPage4.Location = New Point(4, 24)
         TabPage4.Name = "TabPage4"
         TabPage4.Padding = New Padding(3)
-        TabPage4.Size = New Size(768, 371)
+        TabPage4.Size = New Size(792, 371)
         TabPage4.TabIndex = 3
         TabPage4.Text = "Logs"
         ' 
@@ -352,7 +352,7 @@ Partial Class Form1
         Logs.Name = "Logs"
         Logs.ReadOnly = True
         Logs.ScrollBars = RichTextBoxScrollBars.Vertical
-        Logs.Size = New Size(762, 365)
+        Logs.Size = New Size(786, 365)
         Logs.TabIndex = 0
         Logs.Text = ""
         ' 
@@ -368,14 +368,14 @@ Partial Class Form1
         TabPage5.Location = New Point(4, 24)
         TabPage5.Name = "TabPage5"
         TabPage5.Padding = New Padding(3)
-        TabPage5.Size = New Size(768, 371)
+        TabPage5.Size = New Size(792, 371)
         TabPage5.TabIndex = 4
         TabPage5.Text = "Key Maker"
         ' 
         ' Button8
         ' 
         Button8.ForeColor = Color.Black
-        Button8.Location = New Point(599, 50)
+        Button8.Location = New Point(621, 50)
         Button8.Name = "Button8"
         Button8.Size = New Size(163, 23)
         Button8.TabIndex = 5
@@ -413,7 +413,7 @@ Partial Class Form1
         PWDFileGen_Pass.Name = "PWDFileGen_Pass"
         PWDFileGen_Pass.PasswordChar = "*"c
         PWDFileGen_Pass.PlaceholderText = "Password"
-        PWDFileGen_Pass.Size = New Size(756, 23)
+        PWDFileGen_Pass.Size = New Size(778, 23)
         PWDFileGen_Pass.TabIndex = 2
         PWDFileGen_Pass.UseSystemPasswordChar = True
         ' 
