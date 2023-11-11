@@ -35,6 +35,7 @@ Public Class Form1
         If output = "failed" Then
             StringEncrypt_Output.Text = "String decryption failed. Password not correct?"
         Else
+            output = GZIPDecompress(output)
             output = IDEADecrypt(output, LengthController(hashedpass, 128))
             If output = "failed" Then
                 StringEncrypt_Output.Text = "String decryption failed. Password not correct?"
@@ -43,6 +44,7 @@ Public Class Form1
                 If output = "Padding is invalid and cannot be removed." Then
                     StringEncrypt_Output.Text = "String decryption failed. Password not correct?"
                 Else
+                    output = GZIPDecompress(output)
                     output = AES_Decrypt(output, hashedpass)
                     If output = "String decryption failed. Password not correct?" Then
                         StringEncrypt_Output.Text = output
