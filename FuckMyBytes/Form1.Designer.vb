@@ -122,11 +122,13 @@ Partial Class Form1
         ' StringEncrypt_Output
         ' 
         StringEncrypt_Output.BackColor = Color.FromArgb(CByte(64), CByte(64), CByte(64))
+        StringEncrypt_Output.BorderStyle = BorderStyle.None
+        StringEncrypt_Output.Dock = DockStyle.Bottom
         StringEncrypt_Output.ForeColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
-        StringEncrypt_Output.Location = New Point(6, 79)
+        StringEncrypt_Output.Location = New Point(3, 82)
         StringEncrypt_Output.Name = "StringEncrypt_Output"
         StringEncrypt_Output.ReadOnly = True
-        StringEncrypt_Output.Size = New Size(756, 286)
+        StringEncrypt_Output.Size = New Size(762, 286)
         StringEncrypt_Output.TabIndex = 6
         StringEncrypt_Output.Text = ""
         ' 
@@ -268,10 +270,12 @@ Partial Class Form1
         ' Tester_Output
         ' 
         Tester_Output.BackColor = Color.FromArgb(CByte(64), CByte(64), CByte(64))
+        Tester_Output.BorderStyle = BorderStyle.None
+        Tester_Output.Dock = DockStyle.Bottom
         Tester_Output.ForeColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
-        Tester_Output.Location = New Point(6, 108)
+        Tester_Output.Location = New Point(3, 111)
         Tester_Output.Name = "Tester_Output"
-        Tester_Output.Size = New Size(756, 257)
+        Tester_Output.Size = New Size(762, 257)
         Tester_Output.TabIndex = 5
         Tester_Output.Text = ""
         ' 
@@ -337,11 +341,13 @@ Partial Class Form1
         ' 
         Logs.BackColor = Color.Black
         Logs.BorderStyle = BorderStyle.None
+        Logs.Dock = DockStyle.Fill
         Logs.ForeColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
-        Logs.Location = New Point(6, 6)
+        Logs.Location = New Point(3, 3)
         Logs.Name = "Logs"
         Logs.ReadOnly = True
-        Logs.Size = New Size(756, 359)
+        Logs.ScrollBars = RichTextBoxScrollBars.Vertical
+        Logs.Size = New Size(762, 365)
         Logs.TabIndex = 0
         Logs.Text = ""
         ' 
