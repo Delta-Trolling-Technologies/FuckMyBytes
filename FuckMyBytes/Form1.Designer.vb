@@ -173,7 +173,9 @@ Partial Class Form1
         ' 
         ' StringEncrypt_Pwd
         ' 
+        StringEncrypt_Pwd.BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
         StringEncrypt_Pwd.Location = New Point(6, 35)
+        StringEncrypt_Pwd.MaxLength = 900000000
         StringEncrypt_Pwd.Name = "StringEncrypt_Pwd"
         StringEncrypt_Pwd.PasswordChar = "*"c
         StringEncrypt_Pwd.PlaceholderText = "Encryption Password"
@@ -183,6 +185,7 @@ Partial Class Form1
         ' 
         ' StringEncrypt_String
         ' 
+        StringEncrypt_String.BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
         StringEncrypt_String.Location = New Point(6, 6)
         StringEncrypt_String.Name = "StringEncrypt_String"
         StringEncrypt_String.PlaceholderText = "String"
@@ -291,6 +294,7 @@ Partial Class Form1
         ' 
         ' Tester_Pass
         ' 
+        Tester_Pass.BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
         Tester_Pass.Location = New Point(6, 79)
         Tester_Pass.Name = "Tester_Pass"
         Tester_Pass.PasswordChar = "*"c
@@ -301,6 +305,7 @@ Partial Class Form1
         ' 
         ' Tester_String
         ' 
+        Tester_String.BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
         Tester_String.Location = New Point(6, 50)
         Tester_String.Name = "Tester_String"
         Tester_String.PlaceholderText = "String (input)"
@@ -403,6 +408,7 @@ Partial Class Form1
         ' 
         ' PWDFileGen_Pass
         ' 
+        PWDFileGen_Pass.BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
         PWDFileGen_Pass.Location = New Point(6, 21)
         PWDFileGen_Pass.Name = "PWDFileGen_Pass"
         PWDFileGen_Pass.PasswordChar = "*"c
