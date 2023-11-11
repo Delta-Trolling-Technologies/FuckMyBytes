@@ -120,8 +120,8 @@ Public Class Form1
         Dim password As String = GeneratePassword(RandomNumber(8, 32))
         PWDFileGen_Pass.Text = password
     End Sub
-
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Logger_log("-----------")
         Dim hashedpass As String = SHAPassgen(GeneratePassword(RandomNumber(8, 32)))
         Dim input As String = SHAPassgen(PWDFileGen_Pass.Text)
         input = GZIPCompress(input)
