@@ -1,5 +1,4 @@
 ﻿Imports System.IO
-Imports System.Security.Cryptography
 Imports System.Text
 Public Class Form1
     Public mode As Integer
