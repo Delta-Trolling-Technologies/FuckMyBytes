@@ -148,6 +148,7 @@ Module EncryptionProviders
         Dim dataToEncrypt As Byte() = Encoding.UTF8.GetBytes(data)
         Dim encryptedData As Byte() = cipher.DoFinal(dataToEncrypt)
         Dim encryptedText As String = Convert.ToBase64String(encryptedData)
+        ConvertToKiB(encryptedText, 1)
         Logger_log("IDEA encrypted: " + encryptedText)
         Return encryptedText
     End Function
@@ -169,6 +170,7 @@ Module EncryptionProviders
         End Try
         If errors = False Then
             Dim decryptedText As String = Encoding.UTF8.GetString(decryptedData)
+            ConvertToKiB(decryptedText, 1)
             Logger_log("IDEA decrypted: " + decryptedText)
             Return decryptedText
         Else
@@ -187,6 +189,7 @@ Module EncryptionProviders
         Dim dataBytes As Byte() = Encoding.UTF8.GetBytes(data)
         Dim encryptedData As Byte() = encryptor.TransformFinalBlock(dataBytes, 0, dataBytes.Length)
         Dim output As String = Convert.ToBase64String(encryptedData)
+        ConvertToKiB(output, 1)
         Logger_log("3DES encrypted: " + output)
         Return output
     End Function
@@ -209,6 +212,7 @@ Module EncryptionProviders
         End Try
         If errors = False Then
             Dim output As String = Encoding.UTF8.GetString(decryptedBytes)
+            ConvertToKiB(output, 1)
             Logger_log("3DES decrypted: " + output)
             Return output
         Else

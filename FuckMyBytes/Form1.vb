@@ -1,7 +1,6 @@
 ﻿Imports System.IO
 Imports System.Security.Cryptography
 Imports System.Text
-
 Public Class Form1
     Public mode As Integer
     Dim utf8 As Encoding = Encoding.UTF8
@@ -17,18 +16,18 @@ Public Class Form1
         passbytes = 0
         stringbytes = 0
     End Sub
-
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Logger_log("-----------")
         Dim hashedpass As String = SHAPassgen(StringEncrypt_Pwd.Text)
         Dim stringBytes As Byte() = utf8.GetBytes(StringEncrypt_String.Text)
         Dim encryptstring As String = "Im nothing like yall" + Convert.ToBase64String(stringBytes)
         Dim AESstring As String = AES_Encrypt(encryptstring, hashedpass)
-        Dim DESstring As String = DESEncrypt(AESstring, LengthController(hashedpass, 8))
+        Dim gzip1 As String = GZIPCompress(AESstring)
+        Dim DESstring As String = DESEncrypt(gzip1, LengthController(hashedpass, 8))
         Dim IDEAstring As String = IDEAEncrypt(DESstring, LengthController(hashedpass, 128))
-        StringEncrypt_Output.Text = TripleDESEncrypt(IDEAstring, hashedpass)
+        Dim gzip2 As String = GZIPCompress(IDEAstring)
+        StringEncrypt_Output.Text = TripleDESEncrypt(gzip2, hashedpass)
     End Sub
-
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Logger_log("-----------")
         Dim hashedpass As String = SHAPassgen(StringEncrypt_Pwd.Text)
@@ -58,7 +57,6 @@ Public Class Form1
             End If
         End If
     End Sub
-
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         If ComboBox1.SelectedItem = ComboBox1.Items.Item(0) Then
             mode = 0
@@ -68,7 +66,6 @@ Public Class Form1
             DisableDecrypt()
         End If
     End Sub
-
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Dim mode As Integer = Tester_Technology.SelectedIndex
         Dim output As String
@@ -91,7 +88,6 @@ Public Class Form1
         End If
         Tester_Output.Text = output
     End Sub
-
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         OpenFileDialog1.Title = "Open non encrypted file"
         OpenFileDialog1.Filter = "Choose anything (*.*)|*.*"
@@ -105,7 +101,6 @@ Public Class Form1
             MessageBox.Show("You didn't choose anything")
         End If
     End Sub
-
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         OpenFileDialog1.Title = "Open encrypted file"
         OpenFileDialog1.Filter = "FMB encrypted file (*.fmbf)|*.fmbf"
