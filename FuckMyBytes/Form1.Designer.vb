@@ -34,6 +34,11 @@ Partial Class Form1
         StringEncrypt_Pwd = New TextBox()
         StringEncrypt_String = New TextBox()
         TabPage2 = New TabPage()
+        FileEncryptor_eSize = New Label()
+        Button6 = New Button()
+        Label6 = New Label()
+        FileEncryptor_neSize = New Label()
+        Button5 = New Button()
         TabPage3 = New TabPage()
         Tester_Output = New RichTextBox()
         Button4 = New Button()
@@ -46,8 +51,10 @@ Partial Class Form1
         ComboBox1 = New ComboBox()
         StatusStrip1 = New StatusStrip()
         Statistic = New ToolStripStatusLabel()
+        OpenFileDialog1 = New OpenFileDialog()
         TabControl1.SuspendLayout()
         TabPage1.SuspendLayout()
+        TabPage2.SuspendLayout()
         TabPage3.SuspendLayout()
         TabPage4.SuspendLayout()
         StatusStrip1.SuspendLayout()
@@ -169,13 +176,65 @@ Partial Class Form1
         ' 
         ' TabPage2
         ' 
+        TabPage2.BackColor = Color.Black
+        TabPage2.Controls.Add(FileEncryptor_eSize)
+        TabPage2.Controls.Add(Button6)
+        TabPage2.Controls.Add(Label6)
+        TabPage2.Controls.Add(FileEncryptor_neSize)
+        TabPage2.Controls.Add(Button5)
         TabPage2.Location = New Point(4, 24)
         TabPage2.Name = "TabPage2"
         TabPage2.Padding = New Padding(3)
         TabPage2.Size = New Size(768, 371)
         TabPage2.TabIndex = 1
         TabPage2.Text = "File"
-        TabPage2.UseVisualStyleBackColor = True
+        ' 
+        ' FileEncryptor_eSize
+        ' 
+        FileEncryptor_eSize.AutoSize = True
+        FileEncryptor_eSize.Location = New Point(163, 51)
+        FileEncryptor_eSize.Name = "FileEncryptor_eSize"
+        FileEncryptor_eSize.Size = New Size(79, 15)
+        FileEncryptor_eSize.TabIndex = 4
+        FileEncryptor_eSize.Text = "File size: 0 KiB"
+        ' 
+        ' Button6
+        ' 
+        Button6.ForeColor = Color.Black
+        Button6.Location = New Point(6, 47)
+        Button6.Name = "Button6"
+        Button6.Size = New Size(151, 23)
+        Button6.TabIndex = 3
+        Button6.Text = "Open encrypted file"
+        Button6.UseVisualStyleBackColor = True
+        ' 
+        ' Label6
+        ' 
+        Label6.AutoSize = True
+        Label6.Location = New Point(6, 29)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(20, 15)
+        Label6.TabIndex = 2
+        Label6.Text = "Or"
+        ' 
+        ' FileEncryptor_neSize
+        ' 
+        FileEncryptor_neSize.AutoSize = True
+        FileEncryptor_neSize.Location = New Point(163, 7)
+        FileEncryptor_neSize.Name = "FileEncryptor_neSize"
+        FileEncryptor_neSize.Size = New Size(79, 15)
+        FileEncryptor_neSize.TabIndex = 1
+        FileEncryptor_neSize.Text = "File size: 0 KiB"
+        ' 
+        ' Button5
+        ' 
+        Button5.ForeColor = Color.Black
+        Button5.Location = New Point(6, 3)
+        Button5.Name = "Button5"
+        Button5.Size = New Size(151, 23)
+        Button5.TabIndex = 0
+        Button5.Text = "Open non-encrypted file"
+        Button5.UseVisualStyleBackColor = True
         ' 
         ' TabPage3
         ' 
@@ -299,6 +358,10 @@ Partial Class Form1
         Statistic.Size = New Size(137, 17)
         Statistic.Text = "Processed: 0KiB/s 0KiB/p"
         ' 
+        ' OpenFileDialog1
+        ' 
+        OpenFileDialog1.FileName = "OpenFileDialog1"
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -321,6 +384,8 @@ Partial Class Form1
         TabControl1.ResumeLayout(False)
         TabPage1.ResumeLayout(False)
         TabPage1.PerformLayout()
+        TabPage2.ResumeLayout(False)
+        TabPage2.PerformLayout()
         TabPage3.ResumeLayout(False)
         TabPage3.PerformLayout()
         TabPage4.ResumeLayout(False)
@@ -353,4 +418,10 @@ Partial Class Form1
     Friend WithEvents Tester_Output As RichTextBox
     Friend WithEvents TabPage4 As TabPage
     Friend WithEvents Logs As RichTextBox
+    Friend WithEvents Button5 As Button
+    Friend WithEvents FileEncryptor_neSize As Label
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents Label6 As Label
+    Friend WithEvents Button6 As Button
+    Friend WithEvents FileEncryptor_eSize As Label
 End Class

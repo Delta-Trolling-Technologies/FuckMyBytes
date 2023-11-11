@@ -1,4 +1,5 @@
-﻿Imports System.Security.Cryptography
+﻿Imports System.IO
+Imports System.Security.Cryptography
 Imports System.Text
 
 Public Class Form1
@@ -6,6 +7,7 @@ Public Class Form1
     Dim utf8 As Encoding = Encoding.UTF8
     Public passbytes As Double
     Public stringbytes As Double
+    Public encFile As String
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Logs.Text = "Application Started!"
         ComboBox1.SelectedItem = ComboBox1.Items.Item(0)
@@ -88,6 +90,34 @@ Public Class Form1
             output = IDEADecrypt(Tester_String.Text, LengthController(Tester_Pass.Text, 128))
         End If
         Tester_Output.Text = output
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        OpenFileDialog1.Title = "Open non encrypted file"
+        OpenFileDialog1.Filter = "Choose anything (*.*)|*.*"
+        If OpenFileDialog1.ShowDialog = DialogResult.OK Then
+            Dim filePath As String = OpenFileDialog1.FileName
+            encFile = OpenFileDialog1.FileName
+            Dim fileSizeInBytes As Long = New FileInfo(filePath).Length
+            Dim fileSizeInKilobytes As Double = fileSizeInBytes / 1024.0
+            FileEncryptor_neSize.Text = "File size: " + fileSizeInKilobytes.ToString("F2") + " KiB"
+        Else
+            MessageBox.Show("You didn't choose anything")
+        End If
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        OpenFileDialog1.Title = "Open encrypted file"
+        OpenFileDialog1.Filter = "FMB encrypted file (*.fmbf)|*.fmbf"
+        If OpenFileDialog1.ShowDialog = DialogResult.OK Then
+            Dim filePath As String = OpenFileDialog1.FileName
+            encFile = OpenFileDialog1.FileName
+            Dim fileSizeInBytes As Long = New FileInfo(filePath).Length
+            Dim fileSizeInKilobytes As Double = fileSizeInBytes / 1024.0
+            FileEncryptor_neSize.Text = "File size: " + fileSizeInKilobytes.ToString("F2") + " KiB"
+        Else
+            MessageBox.Show("You didn't choose anything")
+        End If
     End Sub
 End Class
 ' felakasztom magam
