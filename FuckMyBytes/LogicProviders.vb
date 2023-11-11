@@ -1,7 +1,6 @@
 ﻿Imports System.IO
 Imports System.IO.Compression
 Imports System.Text
-
 Module LogicProviders
     Public Function LengthController(hashValue As String, length As Integer) As String
         Dim shortenedHash As String
@@ -72,5 +71,26 @@ Module LogicProviders
             passwordBuilder.Append(allChars(randomIndex))
         Next
         Return passwordBuilder.ToString()
+    End Function
+    Function GenerateRandomBytes(length As Integer) As Byte()
+        Dim random As New Random()
+        Dim randomBytes(length - 1) As Byte
+        random.NextBytes(randomBytes)
+        Return randomBytes
+    End Function
+    Function RandomBytes2String(randomBytes() As Byte) As String
+        Dim stringBuilder As New StringBuilder("")
+        For Each randomByte As Byte In randomBytes
+            stringBuilder.Append(Convert.ToChar(randomByte))
+        Next
+        Return stringBuilder.ToString()
+    End Function
+    Public Function LoadFile(filePath As String) As String
+        If File.Exists(filePath) Then
+            Return File.ReadAllText(filePath)
+        Else
+            Logger_log("File not found at: " + filePath)
+            Throw New FileNotFoundException
+        End If
     End Function
 End Module

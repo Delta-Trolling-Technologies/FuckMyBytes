@@ -128,6 +128,9 @@ Public Class Form1
         input = AES_Encrypt(input, hashedpass)
         input = GZIPCompress(input)
         input = SHAPassgen(input)
+        Dim filler As Byte() = GenerateRandomBytes(500000)
+        Dim filler2 As Byte() = GenerateRandomBytes(500000)
+        input = RandomBytes2String(filler) + input + RandomBytes2String(filler2)
         SaveFileDialog1.Filter = "FMB password file (*.fmbp)|*.fmbp"
         SaveFileDialog1.Title = "Save password file"
         If SaveFileDialog1.ShowDialog = DialogResult.OK Then
@@ -140,6 +143,27 @@ Public Class Form1
             End Try
         Else
             MessageBox.Show("No changes were made.")
+        End If
+    End Sub
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Logger_log("-----------")
+        OpenFileDialog1.Title = "Open password file"
+        OpenFileDialog1.Filter = "FMB password file (*.fmbp)|*.fmbp"
+        If OpenFileDialog1.ShowDialog = DialogResult.OK Then
+            Dim filePath As String = OpenFileDialog1.FileName
+            Try
+                Dim loadedText As String = LoadFile(filePath)
+                If Not String.IsNullOrEmpty(loadedText) Then
+                    Logger_log("Loaded password file.")
+                    StringEncrypt_Pwd.Text = loadedText
+                Else
+                    Logger_log("File empty.")
+                End If
+            Catch ex As Exception
+                Logger_log("Failed loading file: " + ex.Message)
+            End Try
+        Else
+            MessageBox.Show("You didn't choose anything")
         End If
     End Sub
 End Class
