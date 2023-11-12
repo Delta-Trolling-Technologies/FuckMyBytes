@@ -35,6 +35,10 @@ Partial Class Form1
         StringEncrypt_Pwd = New TextBox()
         StringEncrypt_String = New TextBox()
         TabPage2 = New TabPage()
+        Button11 = New Button()
+        Button10 = New Button()
+        Button9 = New Button()
+        FileEncrypt_Pwd = New TextBox()
         FileEncryptor_eSize = New Label()
         Button6 = New Button()
         Label6 = New Label()
@@ -175,13 +179,11 @@ Partial Class Form1
         ' 
         StringEncrypt_Pwd.BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
         StringEncrypt_Pwd.Location = New Point(6, 35)
-        StringEncrypt_Pwd.MaxLength = 900000000
+        StringEncrypt_Pwd.MaxLength = Integer.MaxValue
         StringEncrypt_Pwd.Name = "StringEncrypt_Pwd"
-        StringEncrypt_Pwd.PasswordChar = "*"c
         StringEncrypt_Pwd.PlaceholderText = "Encryption Password"
         StringEncrypt_Pwd.Size = New Size(533, 23)
         StringEncrypt_Pwd.TabIndex = 1
-        StringEncrypt_Pwd.UseSystemPasswordChar = True
         ' 
         ' StringEncrypt_String
         ' 
@@ -195,6 +197,10 @@ Partial Class Form1
         ' TabPage2
         ' 
         TabPage2.BackColor = Color.Black
+        TabPage2.Controls.Add(Button11)
+        TabPage2.Controls.Add(Button10)
+        TabPage2.Controls.Add(Button9)
+        TabPage2.Controls.Add(FileEncrypt_Pwd)
         TabPage2.Controls.Add(FileEncryptor_eSize)
         TabPage2.Controls.Add(Button6)
         TabPage2.Controls.Add(Label6)
@@ -206,6 +212,46 @@ Partial Class Form1
         TabPage2.Size = New Size(792, 371)
         TabPage2.TabIndex = 1
         TabPage2.Text = "File"
+        ' 
+        ' Button11
+        ' 
+        Button11.ForeColor = Color.Black
+        Button11.Location = New Point(248, 105)
+        Button11.Name = "Button11"
+        Button11.Size = New Size(75, 23)
+        Button11.TabIndex = 8
+        Button11.Text = "Decrypt"
+        Button11.UseVisualStyleBackColor = True
+        ' 
+        ' Button10
+        ' 
+        Button10.ForeColor = Color.Black
+        Button10.Location = New Point(167, 105)
+        Button10.Name = "Button10"
+        Button10.Size = New Size(75, 23)
+        Button10.TabIndex = 7
+        Button10.Text = "Encrypt"
+        Button10.UseVisualStyleBackColor = True
+        ' 
+        ' Button9
+        ' 
+        Button9.ForeColor = Color.Black
+        Button9.Location = New Point(8, 105)
+        Button9.Name = "Button9"
+        Button9.Size = New Size(149, 23)
+        Button9.TabIndex = 6
+        Button9.Text = "Load password from file"
+        Button9.UseVisualStyleBackColor = True
+        ' 
+        ' FileEncrypt_Pwd
+        ' 
+        FileEncrypt_Pwd.BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
+        FileEncrypt_Pwd.Location = New Point(8, 76)
+        FileEncrypt_Pwd.MaxLength = Integer.MaxValue
+        FileEncrypt_Pwd.Name = "FileEncrypt_Pwd"
+        FileEncrypt_Pwd.PlaceholderText = "Encryption Password"
+        FileEncrypt_Pwd.Size = New Size(776, 23)
+        FileEncrypt_Pwd.TabIndex = 5
         ' 
         ' FileEncryptor_eSize
         ' 
@@ -540,4 +586,8 @@ Partial Class Form1
     Friend WithEvents RichTextBox1 As RichTextBox
     Friend WithEvents Button8 As Button
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
+    Friend WithEvents FileEncrypt_Pwd As TextBox
+    Friend WithEvents Button9 As Button
+    Friend WithEvents Button10 As Button
+    Friend WithEvents Button11 As Button
 End Class

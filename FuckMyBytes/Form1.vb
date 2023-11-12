@@ -6,6 +6,7 @@ Public Class Form1
     Public passbytes As Double
     Public stringbytes As Double
     Public encFile As String
+    Dim nencFile As String
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Logs.Text = "Application Started!"
         ComboBox1.SelectedItem = ComboBox1.Items.Item(0)
@@ -91,10 +92,10 @@ Public Class Form1
     End Sub
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         OpenFileDialog1.Title = "Open non encrypted file"
-        OpenFileDialog1.Filter = "Choose anything (*.*)|*.*"
+        OpenFileDialog1.Filter = "Anything (*.*)|*.*"
         If OpenFileDialog1.ShowDialog = DialogResult.OK Then
             Dim filePath As String = OpenFileDialog1.FileName
-            encFile = OpenFileDialog1.FileName
+            nencFile = OpenFileDialog1.FileName
             Dim fileSizeInBytes As Long = New FileInfo(filePath).Length
             Dim fileSizeInKilobytes As Double = fileSizeInBytes / 1024.0
             FileEncryptor_neSize.Text = "File size: " + fileSizeInKilobytes.ToString("F2") + " KiB"
@@ -110,7 +111,7 @@ Public Class Form1
             encFile = OpenFileDialog1.FileName
             Dim fileSizeInBytes As Long = New FileInfo(filePath).Length
             Dim fileSizeInKilobytes As Double = fileSizeInBytes / 1024.0
-            FileEncryptor_neSize.Text = "File size: " + fileSizeInKilobytes.ToString("F2") + " KiB"
+            FileEncryptor_eSize.Text = "File size: " + fileSizeInKilobytes.ToString("F2") + " KiB"
         Else
             MessageBox.Show("You didn't choose anything")
         End If
@@ -163,6 +164,104 @@ Public Class Form1
             End Try
         Else
             MessageBox.Show("You didn't choose anything")
+        End If
+    End Sub
+
+    Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
+        Logger_log("-----------")
+        OpenFileDialog1.Title = "Open password file"
+        OpenFileDialog1.Filter = "FMB password file (*.fmbp)|*.fmbp"
+        If OpenFileDialog1.ShowDialog = DialogResult.OK Then
+            Dim filePath As String = OpenFileDialog1.FileName
+            Try
+                Dim loadedText As String = LoadFile(filePath)
+                If Not String.IsNullOrEmpty(loadedText) Then
+                    Logger_log("Loaded password file.")
+                    FileEncrypt_Pwd.Text = loadedText
+                Else
+                    Logger_log("File empty.")
+                End If
+            Catch ex As Exception
+                Logger_log("Failed loading file: " + ex.Message)
+            End Try
+        Else
+            MessageBox.Show("You didn't choose anything")
+        End If
+    End Sub
+
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+        'encrypt
+        Logger_log("-----------")
+        Dim input As String = LoadFile(nencFile)
+        Dim hashedpass As String = SHAPassgen(FileEncrypt_Pwd.Text)
+        Dim stringBytes As Byte() = utf8.GetBytes(input)
+        input = "Im nothing like yall" + Convert.ToBase64String(stringBytes)
+        input = AES_Encrypt(input, hashedpass)
+        input = GZIPCompress(input)
+        input = DESEncrypt(input, LengthController(hashedpass, 8))
+        input = IDEAEncrypt(input, LengthController(hashedpass, 128))
+        input = GZIPCompress(input)
+        input = TripleDESEncrypt(input, hashedpass)
+        input = input
+        SaveFileDialog1.Filter = "FMB encrypted file (*.fmbf)|*.fmbf"
+        SaveFileDialog1.Title = "Save encrypted file"
+        If SaveFileDialog1.ShowDialog = DialogResult.OK Then
+            Try
+                Dim filePath As String = SaveFileDialog1.FileName
+                File.WriteAllText(filePath, Input)
+                MessageBox.Show("Encrypted file saved.")
+            Catch ex As Exception
+                MessageBox.Show("An error occured while saving: " + ex.Message)
+            End Try
+        Else
+            MessageBox.Show("No changes were made.")
+        End If
+    End Sub
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+        'decrypt
+        Logger_log("-----------")
+        Dim hashedpass As String = SHAPassgen(FileEncrypt_Pwd.Text)
+        Dim output As String = LoadFile(encFile)
+        output = TripleDESDecrypt(output, hashedpass)
+        If output = "failed" Then
+            MessageBox.Show("String decryption failed. Password not correct?")
+        Else
+            output = GZIPDecompress(output)
+            output = IDEADecrypt(output, LengthController(hashedpass, 128))
+            If output = "failed" Then
+                MessageBox.Show("String decryption failed. Password not correct?")
+            Else
+                output = DESDecrypt(output, LengthController(hashedpass, 8))
+                If output = "Padding is invalid and cannot be removed." Then
+                    MessageBox.Show("String decryption failed. Password not correct?")
+                Else
+                    output = GZIPDecompress(output)
+                    output = AES_Decrypt(output, hashedpass)
+                    If output = "String decryption failed. Password not correct?" Then
+                        MessageBox.Show(output)
+                    Else
+                        output = output.Remove(0, "Im nothing like yall".Length)
+                        Dim outputbytes As Byte()
+                        outputbytes = Convert.FromBase64String(output)
+                        output = utf8.GetString(outputbytes)
+                    End If
+                End If
+            End If
+        End If
+        Dim input As String
+        SaveFileDialog1.Filter = "Anything (*.*)|*.*"
+        SaveFileDialog1.Title = "Save decrypted file"
+        If SaveFileDialog1.ShowDialog = DialogResult.OK Then
+            Try
+                Dim filePath As String = SaveFileDialog1.FileName
+                File.WriteAllText(filePath, output)
+                MessageBox.Show("Decrypted file saved.")
+            Catch ex As Exception
+                MessageBox.Show("An error occured while saving: " + ex.Message)
+            End Try
+        Else
+            MessageBox.Show("No changes were made.")
         End If
     End Sub
 End Class
