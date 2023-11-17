@@ -9,5 +9,5 @@
   <SaveMySettingsOnExit>false</SaveMySettingsOnExit>
   <HighDpiMode>3</HighDpiMode>
   <SplashScreen>Splash</SplashScreen>
-  <MinimumSplashScreenDisplayTime>2000</MinimumSplashScreenDisplayTime>
+  <MinimumSplashScreenDisplayTime>500</MinimumSplashScreenDisplayTime>
 </MyApplicationData>
