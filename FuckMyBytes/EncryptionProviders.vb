@@ -6,19 +6,19 @@ Imports Org.BouncyCastle.Crypto.Parameters
 Imports Org.BouncyCastle.Security
 Module EncryptionProviders
     Public Function AES_Encrypt(ByVal input As String, ByVal pass As String) As String
-        Using AES As New RijndaelManaged
-            Using Hash_AES As New MD5CryptoServiceProvider
+        Using aes As New RijndaelManaged
+            Using hashAes As New MD5CryptoServiceProvider
                 Dim encrypted As String = ""
                 Try
                     Dim hash(31) As Byte
-                    Dim temp As Byte() = Hash_AES.ComputeHash(Encoding.ASCII.GetBytes(pass))
+                    Dim temp As Byte() = hashAes.ComputeHash(Encoding.ASCII.GetBytes(pass))
                     Array.Copy(temp, 0, hash, 0, 16)
                     Array.Copy(temp, 0, hash, 15, 16)
-                    AES.Key = hash
-                    AES.Mode = CipherMode.ECB
-                    Dim DESEncrypter As ICryptoTransform = AES.CreateEncryptor
-                    Dim Buffer As Byte() = Encoding.ASCII.GetBytes(input)
-                    encrypted = Convert.ToBase64String(DESEncrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
+                    aes.Key = hash
+                    aes.Mode = CipherMode.ECB
+                    Dim desEncrypter As ICryptoTransform = aes.CreateEncryptor
+                    Dim buffer As Byte() = Encoding.ASCII.GetBytes(input)
+                    encrypted = Convert.ToBase64String(desEncrypter.TransformFinalBlock(buffer, 0, buffer.Length))
                     ConvertToKiB(encrypted, 1)
                     Logger_log("AES encrypted: " + encrypted)
                     Return encrypted
@@ -30,19 +30,19 @@ Module EncryptionProviders
         End Using
     End Function
     Public Function AES_Decrypt(ByVal input As String, ByVal pass As String) As String
-        Using AES As New RijndaelManaged
-            Using Hash_AES As New MD5CryptoServiceProvider
+        Using aes As New RijndaelManaged
+            Using hashAes As New MD5CryptoServiceProvider
                 Dim decrypted As String = ""
                 Try
                     Dim hash(31) As Byte
-                    Dim temp As Byte() = Hash_AES.ComputeHash(Encoding.ASCII.GetBytes(pass))
+                    Dim temp As Byte() = hashAes.ComputeHash(Encoding.ASCII.GetBytes(pass))
                     Array.Copy(temp, 0, hash, 0, 16)
                     Array.Copy(temp, 0, hash, 15, 16)
-                    AES.Key = hash
-                    AES.Mode = CipherMode.ECB
-                    Dim DESDecrypter As ICryptoTransform = AES.CreateDecryptor
-                    Dim Buffer As Byte() = Convert.FromBase64String(input)
-                    decrypted = Encoding.ASCII.GetString(DESDecrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
+                    aes.Key = hash
+                    aes.Mode = CipherMode.ECB
+                    Dim desDecrypter As ICryptoTransform = aes.CreateDecryptor
+                    Dim buffer As Byte() = Convert.FromBase64String(input)
+                    decrypted = Encoding.ASCII.GetString(desDecrypter.TransformFinalBlock(buffer, 0, buffer.Length))
                     ConvertToKiB(decrypted, 1)
                     Logger_log("AES decrypted: " + decrypted)
                     Return decrypted
@@ -57,7 +57,7 @@ Module EncryptionProviders
             End Using
         End Using
     End Function
-    Public Function SHA512(ByVal input As String) As String
+    Public Function Sha512(ByVal input As String) As String
         Dim data As Byte() = Encoding.UTF8.GetBytes(input)
         Using sha As SHA512 = sha.Create()
             Dim hashBytes As Byte() = sha.ComputeHash(data)
@@ -66,14 +66,14 @@ Module EncryptionProviders
             Return hashString
         End Using
     End Function
-    Public Function SHAPassgen(ByVal input As String) As String
+    Public Function ShaPassgen(ByVal input As String) As String
         For i As Int32 = 1 To 100
-            input = SHA512(input)
+            input = Sha512(input)
         Next i
         Logger_log("Final password hash is: " + input)
         Return input
     End Function
-    Public Function DESEncrypt(plainText As String, password As String) As String
+    Public Function DesEncrypt(plainText As String, password As String) As String
         Dim keyBytes As Byte() = Encoding.UTF8.GetBytes(password)
         Dim ivBytes As Byte() = Encoding.UTF8.GetBytes(password)
         Dim output As String
@@ -100,7 +100,7 @@ Module EncryptionProviders
             Return 0
         End Try
     End Function
-    Public Function DESDecrypt(encryptedText As String, password As String) As String
+    Public Function DesDecrypt(encryptedText As String, password As String) As String
         Dim keyBytes As Byte() = Encoding.UTF8.GetBytes(password)
         Dim ivBytes As Byte() = Encoding.UTF8.GetBytes(password)
         Dim encryptedBytes As Byte()
@@ -138,7 +138,7 @@ Module EncryptionProviders
         Logger_log("DES decrypted: " + output)
         Return output
     End Function
-    Public Function IDEAEncrypt(data As String, password As String)
+    Public Function IdeaEncrypt(data As String, password As String)
         Dim key As Byte() = Encoding.UTF8.GetBytes(password)
         If key.Length < 16 Then
             Logger_log("IDEA thrown an error: password length is not enough")
@@ -152,7 +152,7 @@ Module EncryptionProviders
         Logger_log("IDEA encrypted: " + encryptedText)
         Return encryptedText
     End Function
-    Public Function IDEADecrypt(encryptedText As String, password As String)
+    Public Function IdeaDecrypt(encryptedText As String, password As String)
         Dim key As Byte() = Encoding.UTF8.GetBytes(password)
         Dim errors As Boolean
         If key.Length < 16 Then
@@ -179,9 +179,9 @@ Module EncryptionProviders
             Return decryptedtext
         End If
     End Function
-    Public Function TripleDESEncrypt(data As String, password As String) As String
+    Public Function TripleDesEncrypt(data As String, password As String) As String
         Dim tripleDesAlg As New TripleDESCryptoServiceProvider()
-        Dim key As Byte() = TDESGen(password)
+        Dim key As Byte() = TdesGen(password)
         Dim iv As Byte() = New Byte() {0, 0, 0, 0, 0, 0, 0, 0}
         tripleDesAlg.Key = key
         tripleDesAlg.IV = iv
@@ -193,10 +193,10 @@ Module EncryptionProviders
         Logger_log("3DES encrypted: " + output)
         Return output
     End Function
-    Public Function TripleDESDecrypt(encryptedData As String, password As String) As String
+    Public Function TripleDesDecrypt(encryptedData As String, password As String) As String
         Dim tripleDesAlg As New TripleDESCryptoServiceProvider()
         Dim errors As Boolean
-        Dim key As Byte() = TDESGen(password)
+        Dim key As Byte() = TdesGen(password)
         Dim iv As Byte() = New Byte() {0, 0, 0, 0, 0, 0, 0, 0}
         tripleDesAlg.Key = key
         tripleDesAlg.IV = iv
@@ -220,7 +220,8 @@ Module EncryptionProviders
             Return output
         End If
     End Function
-    Public Function TDESGen(password As String) As Byte()
+
+    Private Function TdesGen(password As String) As Byte()
         Dim sha1 As New SHA1CryptoServiceProvider()
         Dim keyBytes As Byte() = sha1.ComputeHash(Encoding.UTF8.GetBytes(password))
         Array.Resize(keyBytes, 24)

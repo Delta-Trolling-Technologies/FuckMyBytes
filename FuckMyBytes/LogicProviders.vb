@@ -13,21 +13,21 @@ Module LogicProviders
         Return shortenedHash
     End Function
     Public Function ConvertToKiB(input As String, what As Integer) As Double
-        Dim byteCount As Integer = System.Text.Encoding.UTF8.GetByteCount(input)
+        Dim byteCount As Integer = Encoding.UTF8.GetByteCount(input)
         Dim kibibytes As Double = byteCount / 1024.0
         If what = 0 Then
-            Form1.passbytes = Form1.passbytes + kibibytes
+            Form1.Passbytes = Form1.Passbytes + kibibytes
         ElseIf what = 1 Then
-            Form1.stringbytes = Form1.stringbytes + kibibytes
+            Form1.Stringbytes = Form1.Stringbytes + kibibytes
         End If
-        Form1.Statistic.Text = "Processed: " + Form1.stringbytes.ToString("F2") + "KiB/s " + Form1.passbytes.ToString("F2") + "KiB/p"
+        Form1.Statistic.Text = "Processed: " + Form1.Stringbytes.ToString("F2") + "KiB/s " + Form1.Passbytes.ToString("F2") + "KiB/p"
         Return 0
     End Function
     Public Function Logger_log(ByVal input As String)
         Form1.Logs.Text = Form1.Logs.Text + vbCrLf + input
         Return 0
     End Function
-    Public Function GZIPCompress(input As String) As String
+    Public Function GzipCompress(input As String) As String
         Using outputStream As New MemoryStream()
             Using gZipStream As New GZipStream(outputStream, CompressionLevel.Optimal)
                 Using writer As New StreamWriter(gZipStream, Encoding.UTF8)
@@ -40,7 +40,7 @@ Module LogicProviders
             Return output
         End Using
     End Function
-    Public Function GZIPDecompress(input As String) As String
+    Public Function GzipDecompress(input As String) As String
         Dim compressedBytes As Byte() = Convert.FromBase64String(input)
         Using inputStream As New MemoryStream(compressedBytes)
             Using gZipStream As New GZipStream(inputStream, CompressionMode.Decompress)
@@ -66,7 +66,7 @@ Module LogicProviders
         Dim allChars As String = uppercaseChars & lowercaseChars & specialChars & numericChars
         Dim passwordBuilder As New StringBuilder()
         Dim rand As New Random()
-        For i As Integer = 0 To length - 1
+        For i = 0 To length - 1
             Dim randomIndex As Integer = rand.Next(0, allChars.Length)
             passwordBuilder.Append(allChars(randomIndex))
         Next

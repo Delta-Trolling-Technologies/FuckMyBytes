@@ -1,50 +1,50 @@
 ﻿Imports System.IO
 Imports System.Text
 Public Class Form1
-    Public mode As Integer
-    Dim utf8 As Encoding = Encoding.UTF8
-    Public passbytes As Double
-    Public stringbytes As Double
-    Public encFile As String
-    Dim nencFile As String
+    Public Mode As Integer
+    Dim ReadOnly _utf8 As Encoding = Encoding.UTF8
+    Public Passbytes As Double
+    Public Stringbytes As Double
+    Private _encFile As String
+    Dim _nencFile As String
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Logs.Text = "Application Started!"
         ComboBox1.SelectedItem = ComboBox1.Items.Item(0)
         Tester_Technology.SelectedItem = Tester_Technology.Items.Item(0)
-        mode = 0
+        Mode = 0
         EnableDecrypt()
-        passbytes = 0
-        stringbytes = 0
+        Passbytes = 0
+        Stringbytes = 0
     End Sub
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Logger_log("-----------")
-        Dim hashedpass As String = SHAPassgen(StringEncrypt_Pwd.Text)
-        Dim stringBytes As Byte() = utf8.GetBytes(StringEncrypt_String.Text)
+        Dim hashedpass As String = ShaPassgen(StringEncrypt_Pwd.Text)
+        Dim stringBytes As Byte() = _utf8.GetBytes(StringEncrypt_String.Text)
         Dim encryptstring As String = "Im nothing like yall" + Convert.ToBase64String(stringBytes)
-        Dim AESstring As String = AES_Encrypt(encryptstring, hashedpass)
-        Dim gzip1 As String = GZIPCompress(AESstring)
-        Dim DESstring As String = DESEncrypt(gzip1, LengthController(hashedpass, 8))
-        Dim IDEAstring As String = IDEAEncrypt(DESstring, LengthController(hashedpass, 128))
-        Dim gzip2 As String = GZIPCompress(IDEAstring)
-        StringEncrypt_Output.Text = TripleDESEncrypt(gzip2, hashedpass)
+        Dim aeSstring As String = AES_Encrypt(encryptstring, hashedpass)
+        Dim gzip1 As String = GzipCompress(aeSstring)
+        Dim deSstring As String = DesEncrypt(gzip1, LengthController(hashedpass, 8))
+        Dim ideAstring As String = IdeaEncrypt(deSstring, LengthController(hashedpass, 128))
+        Dim gzip2 As String = GzipCompress(ideAstring)
+        StringEncrypt_Output.Text = TripleDesEncrypt(gzip2, hashedpass)
     End Sub
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Logger_log("-----------")
-        Dim hashedpass As String = SHAPassgen(StringEncrypt_Pwd.Text)
-        Dim output As String = TripleDESDecrypt(StringEncrypt_String.Text, hashedpass)
+        Dim hashedpass As String = ShaPassgen(StringEncrypt_Pwd.Text)
+        Dim output As String = TripleDesDecrypt(StringEncrypt_String.Text, hashedpass)
         If output = "failed" Then
             StringEncrypt_Output.Text = "String decryption failed. Password not correct?"
         Else
-            output = GZIPDecompress(output)
-            output = IDEADecrypt(output, LengthController(hashedpass, 128))
+            output = GzipDecompress(output)
+            output = IdeaDecrypt(output, LengthController(hashedpass, 128))
             If output = "failed" Then
                 StringEncrypt_Output.Text = "String decryption failed. Password not correct?"
             Else
-                output = DESDecrypt(output, LengthController(hashedpass, 8))
+                output = DesDecrypt(output, LengthController(hashedpass, 8))
                 If output = "Padding is invalid and cannot be removed." Then
                     StringEncrypt_Output.Text = "String decryption failed. Password not correct?"
                 Else
-                    output = GZIPDecompress(output)
+                    output = GzipDecompress(output)
                     output = AES_Decrypt(output, hashedpass)
                     If output = "String decryption failed. Password not correct?" Then
                         StringEncrypt_Output.Text = output
@@ -52,7 +52,7 @@ Public Class Form1
                         output = output.Remove(0, "Im nothing like yall".Length)
                         Dim outputbytes As Byte()
                         outputbytes = Convert.FromBase64String(output)
-                        Dim aesdecrypted As String = utf8.GetString(outputbytes)
+                        Dim aesdecrypted As String = _utf8.GetString(outputbytes)
                         StringEncrypt_Output.Text = aesdecrypted
                     End If
                 End If
@@ -61,10 +61,10 @@ Public Class Form1
     End Sub
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         If ComboBox1.SelectedItem = ComboBox1.Items.Item(0) Then
-            mode = 0
+            Mode = 0
             EnableDecrypt()
         ElseIf ComboBox1.SelectedItem = ComboBox1.Items.Item(1) Then
-            mode = 1
+            Mode = 1
             DisableDecrypt()
         End If
     End Sub
@@ -76,17 +76,17 @@ Public Class Form1
         ElseIf mode = 1 Then
             output = AES_Decrypt(Tester_String.Text, Tester_Pass.Text)
         ElseIf mode = 2 Then
-            output = SHA512(Tester_String.Text)
+            output = Sha512(Tester_String.Text)
         ElseIf mode = 3 Then
-            output = SHAPassgen(Tester_String.Text)
+            output = ShaPassgen(Tester_String.Text)
         ElseIf mode = 4 Then
-            output = DESEncrypt(Tester_String.Text, LengthController(Tester_Pass.Text, 8))
+            output = DesEncrypt(Tester_String.Text, LengthController(Tester_Pass.Text, 8))
         ElseIf mode = 5 Then
-            output = DESDecrypt(Tester_String.Text, LengthController(Tester_Pass.Text, 8))
+            output = DesDecrypt(Tester_String.Text, LengthController(Tester_Pass.Text, 8))
         ElseIf mode = 6 Then
-            output = IDEAEncrypt(Tester_String.Text, LengthController(Tester_Pass.Text, 128))
+            output = IdeaEncrypt(Tester_String.Text, LengthController(Tester_Pass.Text, 128))
         ElseIf mode = 7 Then
-            output = IDEADecrypt(Tester_String.Text, LengthController(Tester_Pass.Text, 128))
+            output = IdeaDecrypt(Tester_String.Text, LengthController(Tester_Pass.Text, 128))
         End If
         Tester_Output.Text = output
     End Sub
@@ -95,7 +95,7 @@ Public Class Form1
         OpenFileDialog1.Filter = "Anything (*.*)|*.*"
         If OpenFileDialog1.ShowDialog = DialogResult.OK Then
             Dim filePath As String = OpenFileDialog1.FileName
-            nencFile = OpenFileDialog1.FileName
+            _nencFile = OpenFileDialog1.FileName
             Dim fileSizeInBytes As Long = New FileInfo(filePath).Length
             Dim fileSizeInKilobytes As Double = fileSizeInBytes / 1024.0
             FileEncryptor_neSize.Text = "File size: " + fileSizeInKilobytes.ToString("F2") + " KiB"
@@ -108,7 +108,7 @@ Public Class Form1
         OpenFileDialog1.Filter = "FMB encrypted file (*.fmbf)|*.fmbf"
         If OpenFileDialog1.ShowDialog = DialogResult.OK Then
             Dim filePath As String = OpenFileDialog1.FileName
-            encFile = OpenFileDialog1.FileName
+            _encFile = OpenFileDialog1.FileName
             Dim fileSizeInBytes As Long = New FileInfo(filePath).Length
             Dim fileSizeInKilobytes As Double = fileSizeInBytes / 1024.0
             FileEncryptor_eSize.Text = "File size: " + fileSizeInKilobytes.ToString("F2") + " KiB"
@@ -122,12 +122,12 @@ Public Class Form1
     End Sub
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         Logger_log("-----------")
-        Dim hashedpass As String = SHAPassgen(GeneratePassword(RandomNumber(8, 32)))
-        Dim input As String = SHAPassgen(PWDFileGen_Pass.Text)
-        input = GZIPCompress(input)
+        Dim hashedpass As String = ShaPassgen(GeneratePassword(RandomNumber(8, 32)))
+        Dim input As String = ShaPassgen(PWDFileGen_Pass.Text)
+        input = GzipCompress(input)
         input = AES_Encrypt(input, hashedpass)
-        input = GZIPCompress(input)
-        input = SHAPassgen(input)
+        input = GzipCompress(input)
+        input = ShaPassgen(input)
         Dim filler As Byte() = GenerateRandomBytes(500000)
         Dim filler2 As Byte() = GenerateRandomBytes(500000)
         input = RandomBytes2String(filler) + input + RandomBytes2String(filler2)
@@ -192,16 +192,16 @@ Public Class Form1
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
         'encrypt
         Logger_log("-----------")
-        Dim input As String = LoadFile(nencFile)
-        Dim hashedpass As String = SHAPassgen(FileEncrypt_Pwd.Text)
-        Dim stringBytes As Byte() = utf8.GetBytes(input)
+        Dim input As String = LoadFile(_nencFile)
+        Dim hashedpass As String = ShaPassgen(FileEncrypt_Pwd.Text)
+        Dim stringBytes As Byte() = _utf8.GetBytes(input)
         input = "Im nothing like yall" + Convert.ToBase64String(stringBytes)
         input = AES_Encrypt(input, hashedpass)
-        input = GZIPCompress(input)
-        input = DESEncrypt(input, LengthController(hashedpass, 8))
-        input = IDEAEncrypt(input, LengthController(hashedpass, 128))
-        input = GZIPCompress(input)
-        input = TripleDESEncrypt(input, hashedpass)
+        input = GzipCompress(input)
+        input = DesEncrypt(input, LengthController(hashedpass, 8))
+        input = IdeaEncrypt(input, LengthController(hashedpass, 128))
+        input = GzipCompress(input)
+        input = TripleDesEncrypt(input, hashedpass)
         input = input
         SaveFileDialog1.Filter = "FMB encrypted file (*.fmbf)|*.fmbf"
         SaveFileDialog1.Title = "Save encrypted file"
@@ -221,22 +221,22 @@ Public Class Form1
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
         'decrypt
         Logger_log("-----------")
-        Dim hashedpass As String = SHAPassgen(FileEncrypt_Pwd.Text)
-        Dim output As String = LoadFile(encFile)
-        output = TripleDESDecrypt(output, hashedpass)
+        Dim hashedpass As String = ShaPassgen(FileEncrypt_Pwd.Text)
+        Dim output As String = LoadFile(_encFile)
+        output = TripleDesDecrypt(output, hashedpass)
         If output = "failed" Then
             MessageBox.Show("String decryption failed. Password not correct?")
         Else
-            output = GZIPDecompress(output)
-            output = IDEADecrypt(output, LengthController(hashedpass, 128))
+            output = GzipDecompress(output)
+            output = IdeaDecrypt(output, LengthController(hashedpass, 128))
             If output = "failed" Then
                 MessageBox.Show("String decryption failed. Password not correct?")
             Else
-                output = DESDecrypt(output, LengthController(hashedpass, 8))
+                output = DesDecrypt(output, LengthController(hashedpass, 8))
                 If output = "Padding is invalid and cannot be removed." Then
                     MessageBox.Show("String decryption failed. Password not correct?")
                 Else
-                    output = GZIPDecompress(output)
+                    output = GzipDecompress(output)
                     output = AES_Decrypt(output, hashedpass)
                     If output = "String decryption failed. Password not correct?" Then
                         MessageBox.Show(output)
@@ -244,12 +244,11 @@ Public Class Form1
                         output = output.Remove(0, "Im nothing like yall".Length)
                         Dim outputbytes As Byte()
                         outputbytes = Convert.FromBase64String(output)
-                        output = utf8.GetString(outputbytes)
+                        output = _utf8.GetString(outputbytes)
                     End If
                 End If
             End If
         End If
-        Dim input As String
         SaveFileDialog1.Filter = "Anything (*.*)|*.*"
         SaveFileDialog1.Title = "Save decrypted file"
         If SaveFileDialog1.ShowDialog = DialogResult.OK Then
